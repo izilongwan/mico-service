@@ -1,0 +1,13 @@
+jetcache:
+  statIntervalMinutes: 15
+  remote:
+    default:
+      type: redis
+      port: 6379
+      host: localhost
+      keyConvertor: fastjson
+      expireAfterWriteInMillis: 100000
+      valueEncoder: java
+      valueDecoder: java
+      poolConfig:
+        maxTotal: 20

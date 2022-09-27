@@ -1,0 +1,11 @@
+share:
+  timestamp: timestamp
+
+key:
+  # 当前用户
+  employee: employee
+  # 被更新的用户
+  updated-employee: updated-employee
+
+upload:
+  base-path: E:\upload\

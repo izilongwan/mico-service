@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: eureka-feignapi
+
+eureka-server:
+  port: 9001
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:${eureka-server.port}/eureka
+
+feign:
+  httpclient:
+    enabled: true
+    max-connections: 200
+    max-connections-per-route: 50
