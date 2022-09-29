@@ -7,15 +7,10 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.alicp.jetcache.anno.config.EnableCreateCacheAnnotation;
-import com.alicp.jetcache.anno.config.EnableMethodCache;
-
 @SpringBootApplication
 @MapperScan({ "com.common.mapper" })
 @ServletComponentScan
 @EnableTransactionManagement
-@EnableCreateCacheAnnotation
-@EnableMethodCache(basePackages = { "com.common" })
 @EnableAsync
 public class App {
 	public static void main(String[] args) {

@@ -15,19 +15,14 @@
     </parent>
 
     <properties>
-        <common.version>1.0</common.version>
+        <feignapi.version>1.0</feignapi.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.common</groupId>
-            <artifactId>common</artifactId>
-            <version>${common.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <groupId>com.feignapi</groupId>
+            <artifactId>feignapi</artifactId>
+            <version>${feignapi.version}</version>
         </dependency>
     </dependencies>
 </project>

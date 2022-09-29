@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: eureka-m3
+
+  cloud:
+    nacos:
+      server-addr: localhost:8848

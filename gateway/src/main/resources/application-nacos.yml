@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: gateway
+
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+
+    gateway:
+      routes:
+        - id: eureka-m2
+          uri: lb://eureka-m2
+          predicates:
+            - Path=/m2/**
+        - id: eureka-m3
+          uri: lb://eureka-m3
+          predicates:
+            - Path=/m3/**

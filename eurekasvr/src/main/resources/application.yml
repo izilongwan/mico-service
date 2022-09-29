@@ -2,8 +2,8 @@ spring:
   profiles:
     active: @profile.active@
     group:
-      dev: eureka,cache
-      prod: eureka,cache
+      dev: eureka
+      prod: eureka
   datasource:
     url: jdbc:mysql://localhost:3306/takeout?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
     username: root
