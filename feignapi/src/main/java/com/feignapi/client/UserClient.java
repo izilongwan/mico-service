@@ -12,5 +12,5 @@ public interface UserClient {
     R<String> getInfo();
 
     @GetMapping("m2/{id}")
-    R<String> getId(@PathVariable Long id);
+    R<String> getId(@PathVariable("id") Long id);
 }
