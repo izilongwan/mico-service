@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: @profile.active@
+  datasource:
+    url: jdbc:mysql://localhost:3306?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+  web:
+    resources:
+      static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,classpath:/
+
+server:
+  port: 9999
