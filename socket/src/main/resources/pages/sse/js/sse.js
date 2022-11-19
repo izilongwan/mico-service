@@ -1,7 +1,16 @@
-; (() => {
+; ((doc, win) => {
   const BASE_URL = 'http://localhost:9999/sse'
   // 用时间戳模拟登录用户
   const userId = Date.now();
+  const oDom = {
+    textarea: doc.querySelector('.J_textarea'),
+    btn: doc.querySelector('.J_btn'),
+    list: doc.querySelector('.J_list'),
+    listCount: doc.querySelector('.J_listCount'),
+  }
+  const data = {
+    list: [],
+  }
   let source = null;
 
   const init = () => {
@@ -19,7 +28,46 @@
     source.addEventListener('message', onMessage)
     source.addEventListener('error', onError)
     // 监听窗口关闭事件，主动去关闭sse连接，如果服务端设置永不过期，浏览器关闭后手动清理服务端数据
-    window.onbeforeunload = closeSse
+    win.onbeforeunload = closeSse
+
+    oDom.btn.addEventListener('click', onSendMessage, false)
+  }
+
+  function onSendMessage() {
+    let { value } = oDom.textarea
+
+    value = value.trim()
+
+    if (!value.length) {
+      return
+    }
+
+    http({ url: `${ BASE_URL}/send/batch`, method: 'POST', body: JSON.stringify(JSON.parse(value)) })
+
+    data.list.push(value)
+    addListContent(value)
+    oDom.textarea.value = ''
+  }
+
+  function addListContent(value) {
+    oDom.listCount.innerHTML = `LIST (${data.list.length})`
+    oDom.list.innerHTML += `
+      <li>${value}</li>
+    `
+  }
+
+  function http(option) {
+    const { url = '', method = 'GET', body = null, headers = {
+      'Content-Type': 'application/json',
+    } } = option
+
+    return fetch(url, {
+      body,
+      method,
+      headers,
+    })
+      .then(json => json.json())
+      .then(rs => rs)
   }
 
   function initEventSource() {
@@ -59,4 +107,4 @@
   }
 
   init()
-})();
+})(document, window);
