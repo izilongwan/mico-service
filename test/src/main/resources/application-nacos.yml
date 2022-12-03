@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: test
+
+  cloud:
+    nacos:
+      server-addr: localhost:8848

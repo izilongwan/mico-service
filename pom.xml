@@ -21,6 +21,7 @@
         <module>m2</module>
         <module>m3</module>
         <module>socket</module>
+        <module>test</module>
     </modules>
 
     <properties>

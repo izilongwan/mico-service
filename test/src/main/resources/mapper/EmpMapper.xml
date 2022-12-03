@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.mapper.EmpMapper">
+    <select id="add" resultType="emp">
+        SELECT * FROM emp;
+    </select>
+
+    <!-- delete -->
+    <delete id="delete">
+        DELETE FROM emp WHERE id = ${id};
+    </delete>
+
+    <!-- update -->
+    <update id="update"></update>
+
+    <!-- selectByDept -->
+    <select id="selectByDept" resultType="emp">
+        SELECT * FROM emp WHERE dept_id = #{dept.id}
+    </select>
+</mapper>

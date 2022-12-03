@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.mapper.DeptDtoMapper">
+    <resultMap id="deptDtoMap" type="deptDto">
+        <!-- 需要指明主键 -->
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="names" column="names" />
+        <result property="count" column="count" />
+        <association property="emp" resultMap="empMap" columnPrefix="e_">
+        </association>
+        <collection property="emps" ofType="emp" resultMap="empMap" columnPrefix="es_"></collection>
+    </resultMap>
+
+    <resultMap id="empMap" type="emp">
+        <!-- 需要指明主键 -->
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="salary" column="salary" />
+        <result property="deptId" column="dept_id" />
+        <result property="deptName" column="dept_name" />
+    </resultMap>
+
+    <select id="selectNames" resultMap="deptDtoMap">
+        SELECT id, name, (
+                SELECT
+                    GROUP_CONCAT(name SEPARATOR '_')
+                FROM emp e
+                WHERE
+                    e.dept_id = d.id
+            ) names, (
+                SELECT COUNT(*)
+                FROM emp e
+                WHERE
+                    e.dept_id = d.id
+            ) count, (
+                SELECT e.id
+                FROM emp e
+                WHERE e.dept_id = d.id
+                ORDER BY salary DESC
+                LIMIT 1
+            ) e_id, (
+                SELECT e.salary
+                FROM emp e
+                WHERE e.dept_id = d.id
+                ORDER BY salary DESC
+                LIMIT 1
+            ) e_salary, (
+                SELECT e.name
+                FROM emp e
+                WHERE e.dept_id = d.id
+                ORDER BY salary DESC
+                LIMIT 1
+            ) e_name,
+            id e_dept_id,
+            name e_dept_name
+        FROM dept d;
+    </select>
+
+    <select id="select" resultMap="deptDtoMap">
+        SELECT
+            d.id,
+            d.name,
+            e.id es_id,
+            e.name es_name,
+            e.salary es_salary,
+            d.id es_dept_id,
+            d.name es_dept_name
+        FROM dept d, emp e
+        WHERE d.id = e.dept_id;
+    </select>
+
+    <!-- selectList -->
+    <select id="selectList" resultMap="deptEmpsMap">
+        SELECT *, (
+            SELECT
+                GROUP_CONCAT(e.name ORDER BY e.salary DESC SEPARATOR '_')
+            FROM emp e
+            WHERE e.dept_id = d.id
+        ) names, (
+            SELECT COUNT(*)
+            FROM emp e
+            WHERE e.dept_id = d.id
+        ) count
+        FROM dept d
+        WHERE d.id = #{id};
+    </select>
+
+    <resultMap id="deptEmpsMap" type="deptDto">
+        <!-- 需要指明主键 -->
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="names" column="names" />
+        <result property="count" column="count" />
+        <association property="emp" column="emp" javaType="emp"></association>
+        <collection property="emps" ofType="emp" column="{id=id,dept_name=name}" select="selectEmps"></collection>
+    </resultMap>
+
+    <select id="selectEmps" parameterType="java.util.HashMap" resultType="emp">
+        SELECT *, #{dept_name} dept_name FROM emp
+        <where>
+            dept_id = #{id}
+            ORDER BY salary DESC
+        </where>
+    </select>
+
+    <!-- selectOne -->
+    <select id="selectOne" resultMap="deptEmpMap">
+        SELECT * FROM dept WHERE id = #{id};
+    </select>
+
+    <resultMap id="deptEmpMap" type="deptDto">
+        <!-- 需要指明主键 -->
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <association property="emp" javaType="emp" select="selectEmp" column="{id=id,dept_name=name}"></association>
+        <collection property="emps" column="emps" ofType="emp"></collection>
+    </resultMap>
+
+    <select id="selectEmp" resultType="emp">
+        SELECT *, #{dept_name} dept_name
+        FROM emp
+        WHERE dept_id = #{id}
+        ORDER BY salary
+        DESC LIMIT 1;
+    </select>
+</mapper>
