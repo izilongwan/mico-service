@@ -6,12 +6,12 @@ import lombok.Data;
 
 @Data
 public class Emp implements Serializable {
-    Integer id;
-    String name;
-    Integer genderId;
-    Integer deptId;
-    Double salary;
-    String createTime;
+    public Integer id;
+    public String name;
+    public Integer genderId;
+    public Integer deptId;
+    public Double salary;
+    public String createTime;
 
-    String deptName;
+    public String deptName;
 }

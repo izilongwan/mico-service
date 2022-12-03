@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Dept implements Serializable {
-    Integer id;
-    String name;
-    String createTime;
+    public Integer id;
+    public String name;
+    public String createTime;
 }
