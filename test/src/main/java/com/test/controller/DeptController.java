@@ -14,7 +14,7 @@ import com.test.dto.DeptDto;
 import com.test.mapper.DeptDtoMapper;
 
 @RestController
-@RequestMapping("/dept")
+@RequestMapping("test/dept")
 public class DeptController {
     @Resource
     RestTemplate restTemplate;

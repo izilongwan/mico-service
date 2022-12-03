@@ -16,3 +16,7 @@ spring:
           uri: lb://eureka-m3
           predicates:
             - Path=/m3/**
+        - id: test
+          uri: lb://test
+          predicates:
+            - Path=/test/**
