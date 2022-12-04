@@ -15,6 +15,6 @@
 
     <!-- selectByDept -->
     <select id="selectByDept" resultType="emp">
-        SELECT * FROM emp WHERE dept_id = #{dept.id}
+        SELECT * FROM emp WHERE dept_id = #{deptId}
     </select>
 </mapper>

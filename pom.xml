@@ -34,6 +34,17 @@
         <fastjson.version>2.0.10</fastjson.version>
         <jetcache-starter-redis.version>2.6.2</jetcache-starter-redis.version>
         <knife4j-spring-boot-starter.version>2.0.9</knife4j-spring-boot-starter.version>
+
+        <common.version>1.0</common.version>
+        <dianping.version>1.0</dianping.version>
+        <feignapi.version>1.0</feignapi.version>
+        <gateway.version>1.0</gateway.version>
+        <m2.version>1.0</m2.version>
+        <m3.version>1.0</m3.version>
+        <socket.version>1.0</socket.version>
+        <test.version>1.0</test.version>
+        <jedis.version>4.1.1</jedis.version>
+
         <spring-cloud.version>2020.0.1</spring-cloud.version>
         <spring-cloud-alibaba-dependencies.version>2.2.5.RELEASE</spring-cloud-alibaba-dependencies.version>
         <maven.test.skip>true</maven.test.skip>
@@ -54,6 +65,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.vaadin.external.google</groupId>
+                    <artifactId>android-json</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
