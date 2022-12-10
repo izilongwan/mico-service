@@ -61,8 +61,16 @@ public class R<T> implements Serializable {
         return new R<T>(null, RCM.ERROR_CODE, RCM.ERROR_MESSAGE);
     }
 
+    final public static <T> R<T> ERROR(T data) {
+        return new R<T>(data, RCM.ERROR_CODE, RCM.ERROR_MESSAGE);
+    }
+
     final public static <T> R<T> ERROR(String message) {
         return new R<T>(null, RCM.ERROR_CODE, message);
+    }
+
+    final public static <T> R<T> ERROR(T data, String message) {
+        return new R<T>(data, RCM.ERROR_CODE, message);
     }
 
     final public static <T> R<T> ERROR(String message, long timecost) {
