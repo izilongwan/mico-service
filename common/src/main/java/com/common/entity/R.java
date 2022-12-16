@@ -1,6 +1,7 @@
 package com.common.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,6 +36,14 @@ public class R<T> implements Serializable {
         this.code = code;
         this.message = message;
         this.timecost = timecost;
+    }
+
+    final public static <T> R<T> AUTO(Integer code) {
+        if (Objects.equals(code, 0)) {
+            return (R<T>) R.SUCCESS(code);
+        }
+
+        return (R<T>) R.ERROR(code);
     }
 
     final public static <T> R<T> SUCCESS() {
