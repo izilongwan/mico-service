@@ -15,11 +15,13 @@
 
     <modules>
         <module>common</module>
+        <module>dianping</module>
         <module>eurekasvr</module>
         <module>feignapi</module>
         <module>gateway</module>
         <module>m2</module>
         <module>m3</module>
+        <module>send-message</module>
         <module>socket</module>
         <module>test</module>
     </modules>
@@ -41,10 +43,13 @@
         <gateway.version>1.0</gateway.version>
         <m2.version>1.0</m2.version>
         <m3.version>1.0</m3.version>
+        <send-message.version>1.0</send-message.version>
         <socket.version>1.0</socket.version>
         <test.version>1.0</test.version>
         <jedis.version>4.1.1</jedis.version>
+        <redisson.version>3.13.6</redisson.version>
 
+        <hutool-all.version>5.8.5</hutool-all.version>
         <spring-cloud.version>2020.0.1</spring-cloud.version>
         <spring-cloud-alibaba-dependencies.version>2.2.5.RELEASE</spring-cloud-alibaba-dependencies.version>
         <maven.test.skip>true</maven.test.skip>

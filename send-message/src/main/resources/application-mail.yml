@@ -1,0 +1,12 @@
+spring:
+  mail:
+    host: smtp.qq.com
+    username: js.nb
+    # 授权码
+    password: sqhaguwvxnjrebjf
+
+mail-config:
+  addr: js.nb@qq.com(ᕙ(⇀‸↼‵‵) )
+  expire: 300
+  expireKey: "test:mail:code:"
+  template: code

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mail</title>
+</head>
+
+<body>
+
+  <table cellspacing="0" width="600px">
+    <tr>
+      <td>
+        <table cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse;">
+          <tr>
+            <td>
+              <img th:src="${data.img}">
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <h3>通知</h3>
+
+              <table cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td colspan="2">
+                    通知事项：<span th:text="${data.name}"></span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    产品名称：<span th:text="${data.content}"></span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    审批人：<span th:text="${data.person}"></span>
+                  </td>
+                </tr>
+
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+  </table>
+</body>
+
+</html>

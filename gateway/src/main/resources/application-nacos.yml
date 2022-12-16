@@ -20,3 +20,7 @@ spring:
           uri: lb://test
           predicates:
             - Path=/test/**
+        - id: dianping
+          uri: lb://dianping
+          predicates:
+            - Path=/dianping/**
