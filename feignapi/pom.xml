@@ -10,13 +10,9 @@
     <parent>
         <groupId>com</groupId>
         <artifactId>mico-service</artifactId>
-        <version>1.0</version>
+        <version>${mico-service.version}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-
-    <properties>
-        <common.version>1.0</common.version>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -24,11 +20,6 @@
             <artifactId>common</artifactId>
             <version>${common.version}</version>
         </dependency>
-
-        <!-- <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency> -->
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>

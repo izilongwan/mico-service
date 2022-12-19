@@ -4,7 +4,7 @@
 
     <groupId>com</groupId>
     <artifactId>mico-service</artifactId>
-    <version>1.0</version>
+    <version>${mico-service.version}</version>
     <packaging>pom</packaging>
 
     <parent>
@@ -38,6 +38,7 @@
         <jetcache-starter-redis.version>2.6.2</jetcache-starter-redis.version>
         <knife4j-spring-boot-starter.version>2.0.9</knife4j-spring-boot-starter.version>
 
+        <mico-service.version>1.0</mico-service.version>
         <common.version>1.0</common.version>
         <dianping.version>1.0</dianping.version>
         <eurekasvr.version>1.0</eurekasvr.version>
