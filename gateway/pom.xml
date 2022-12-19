@@ -4,7 +4,7 @@
 
     <groupId>com.gateway</groupId>
     <artifactId>gateway</artifactId>
-    <version>1.0</version>
+    <version>${gateway.version}</version>
     <packaging>jar</packaging>
 
     <parent>

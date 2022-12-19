@@ -4,7 +4,7 @@
 
     <groupId>com.test</groupId>
     <artifactId>test</artifactId>
-    <version>1.0</version>
+    <version>${test.version}</version>
     <packaging>jar</packaging>
 
     <parent>

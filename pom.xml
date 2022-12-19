@@ -24,6 +24,7 @@
         <module>send-message</module>
         <module>socket</module>
         <module>test</module>
+        <module>upload-download</module>
     </modules>
 
     <properties>
@@ -39,6 +40,7 @@
 
         <common.version>1.0</common.version>
         <dianping.version>1.0</dianping.version>
+        <eurekasvr.version>1.0</eurekasvr.version>
         <feignapi.version>1.0</feignapi.version>
         <gateway.version>1.0</gateway.version>
         <m2.version>1.0</m2.version>
@@ -46,6 +48,8 @@
         <send-message.version>1.0</send-message.version>
         <socket.version>1.0</socket.version>
         <test.version>1.0</test.version>
+        <upload-download.version>1.0</upload-download.version>
+
         <jedis.version>4.1.1</jedis.version>
         <redisson.version>3.13.6</redisson.version>
 

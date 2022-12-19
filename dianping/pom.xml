@@ -4,7 +4,7 @@
 
     <groupId>com.dianping</groupId>
     <artifactId>dianping</artifactId>
-    <version>1.0</version>
+    <version>${dianping.version}</version>
     <packaging>jar</packaging>
 
     <parent>

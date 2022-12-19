@@ -4,7 +4,7 @@
 
     <groupId>com.socket</groupId>
     <artifactId>socket</artifactId>
-    <version>1.0</version>
+    <version>${socket.version}</version>
     <packaging>jar</packaging>
 
     <parent>

@@ -4,7 +4,7 @@
 
     <groupId>com.eurekasvr</groupId>
     <artifactId>eurekasvr</artifactId>
-    <version>1.0</version>
+    <version>${eurekasvr.version}</version>
     <packaging>jar</packaging>
 
     <parent>

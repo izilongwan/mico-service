@@ -4,7 +4,7 @@
 
     <groupId>com.m3</groupId>
     <artifactId>m3</artifactId>
-    <version>1.0</version>
+    <version>${m3.version}</version>
     <packaging>jar</packaging>
 
     <parent>

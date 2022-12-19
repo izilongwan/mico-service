@@ -4,7 +4,7 @@
 
     <groupId>com.feignapi</groupId>
     <artifactId>feignapi</artifactId>
-    <version>1.0</version>
+    <version>${feignapi.version}</version>
     <packaging>jar</packaging>
 
     <parent>
