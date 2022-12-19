@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: upload
+
+  cloud:
+    nacos:
+      server-addr: localhost:8848
