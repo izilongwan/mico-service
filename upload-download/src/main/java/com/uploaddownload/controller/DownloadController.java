@@ -16,8 +16,13 @@ public class DownloadController {
     @Resource
     DownloadService downloadService;
 
-    @GetMapping("{hash}")
-    public ResponseEntity<org.springframework.core.io.Resource> download(@PathVariable String hash) {
-        return downloadService.download(hash);
+    @GetMapping("local/{hash}")
+    public ResponseEntity<Object> downloadLocal(@PathVariable String hash) {
+        return downloadService.downloadLocal(hash);
+    }
+
+    @GetMapping("net/{hash}")
+    public ResponseEntity<Object> downloadNet(@PathVariable String hash) {
+        return downloadService.downloadNet(hash);
     }
 }
