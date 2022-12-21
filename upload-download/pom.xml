@@ -2,8 +2,8 @@
 <project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.updownload</groupId>
-    <artifactId>upload</artifactId>
+    <groupId>com.uploaddownload</groupId>
+    <artifactId>upload-download</artifactId>
     <version>${upload-download.version}</version>
     <packaging>jar</packaging>
 
@@ -20,10 +20,11 @@
             <artifactId>feignapi</artifactId>
             <version>${feignapi.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+      </dependency>
     </dependencies>
 
-    <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-web</artifactId>
-  </dependency>
 </project>

@@ -4,7 +4,7 @@
 
     <groupId>com.sendmessage</groupId>
     <artifactId>send-message</artifactId>
-    <version>${send-message.version}</version>{}>
+    <version>${send-message.version}</version>
     <packaging>jar</packaging>
 
     <parent>
