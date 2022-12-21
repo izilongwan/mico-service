@@ -17,7 +17,7 @@ import com.common.entity.R;
 import com.uploaddownload.service.DownloadService;
 
 @Service
-public class DownloadImpl implements DownloadService {
+public class DownloadServiceImpl implements DownloadService {
     @Value("${upload-config.destPath}")
     String destPath;
 
