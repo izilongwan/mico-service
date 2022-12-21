@@ -14,7 +14,7 @@ import com.common.entity.R;
 @Configuration
 @Aspect
 public class TimecostAop {
-    @Value("${share.timestamp}")
+    @Value("${share.timestamp:timestamp}")
     String timestamp;
 
     @Pointcut("execution(public * com..controller.*Controller.*(..))")
