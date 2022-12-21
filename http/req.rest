@@ -1,0 +1,21 @@
+@HOST = http://localhost
+@PORT = 1000
+@VERSION = HTTP/1.1
+@CONTENT_TYPE = Content-Type: application/json
+
+@FILE_CONTENT_TYPE = Content-Type: multipart/form-data;
+
+# @name Req
+POST {{HOST}}:{{PORT}}/dianping/user/test/comsume/1 {{{{VERSION}}}}
+{{CONTENT_TYPE}}
+
+{
+  "id": 1
+}
+
+###
+# @name Res
+GET {{HOST}}:{{PORT}}/dianping/user/res {{{{VERSION}}}}
+
+### @name GetTomcat
+GET {{HOST}}/demo/1475.gif HTTP/1.1
