@@ -13,7 +13,7 @@ import com.common.entity.R;
 
 @Configuration
 @Aspect
-public class TimcostAop {
+public class TimecostAop {
     @Value("${share.timestamp}")
     String timestamp;
 
