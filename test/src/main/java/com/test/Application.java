@@ -6,8 +6,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
+import com.common.aop.TimecostAop;
+
 @SpringBootApplication
-@ComponentScan({ "com.test", "com.common.aop.TimecostAop" })
+@ComponentScan(basePackages = { "com.test" }, basePackageClasses = { TimecostAop.class })
+// @ComponentScan({ "com.test", "com.common.aop" })
 @MapperScan({ "com.test.mapper", "com.test.dto" })
 @EnableFeignClients({ "com.feignapi.client" })
 public class Application {
