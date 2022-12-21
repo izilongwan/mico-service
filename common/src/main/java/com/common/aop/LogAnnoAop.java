@@ -11,10 +11,10 @@ import com.common.aop.anno.LogAnno;
 @Aspect
 @Configuration
 public class LogAnnoAop {
-    @Value("${key.employee}")
+    @Value("${key.employee:employee}")
     String employee;
 
-    @Value("${key.updated-employee}")
+    @Value("${key.updated-employee:updated-employee}")
     String updatedEmployee;
 
     @AfterReturning("@annotation(logAnno)")
