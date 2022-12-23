@@ -1,0 +1,16 @@
+<?xm1 version="1. B" encoding= "UTF-8"?>
+<configuration xmlns="http://logging.apache.org/log4j/2.0/config">
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{HH:mm:ss.SSS} %5level [%t] %logger - %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="cn" level="debug" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <root level="ERROR">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

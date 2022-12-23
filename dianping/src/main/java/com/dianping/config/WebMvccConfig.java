@@ -8,7 +8,7 @@ import com.dianping.interceptor.LoginInterceptor;
 import com.dianping.interceptor.RefreshInterceptor;
 
 @Configuration
-public class WebMvcConfig implements WebMvcConfigurer {
+public class WebMvccConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
