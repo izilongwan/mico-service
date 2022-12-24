@@ -29,7 +29,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <start-class>com.App</start-class>
         <java.version>1.8</java.version>
         <commons-lang.version>2.6</commons-lang.version>
         <mybatis-plus-boot-starter.version>3.4.2</mybatis-plus-boot-starter.version>
@@ -164,15 +163,18 @@
             <properties>
                 <profile.active>dev</profile.active>
             </properties>
-            <activation>
+            <!-- <activation>
                 <activeByDefault>true</activeByDefault>
-            </activation>
+            </activation> -->
         </profile>
         <profile>
             <id>prod</id>
             <properties>
                 <profile.active>prod</profile.active>
             </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
     </profiles>
 
