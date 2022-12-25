@@ -1,0 +1,46 @@
+version: '3'
+services:
+  # 不同容器间可以使用服务名进行访问
+
+  nacos:
+    restart: always
+    image: nacos/nacos-server
+    environment:
+      MODE: standalone
+    ports:
+      - 8848:8848
+
+  c_mysql:
+    depends_on: nacos
+    restart: always
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - $PWD/mysql/conf:/etc/mysql/conf.d
+      - $PWD/mysql/data:/var/lib/mysql
+      - $PWD/mysql/log:/var/log/mysql
+      - $PWD/mysql/mysql-files:/var/lib/mysql-files
+    ports:
+      - 5006:3306
+  c_redis:
+    depends_on: nacos
+    restart: always
+    image: redis
+    ports:
+      - 5009:6979
+  c_nginx:
+    restart: always
+    image: nginx
+    volumes:
+      - $PWD/nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - $PWD/nginx/logs:/var/log/nginx
+      - $PWD/nginx/html:/usr/share/nginx/html
+    ports:
+      - 5008:80
+  c_app:
+    depends_on: nacos
+    restart: always
+    image: app:2.0
+    ports:
+      - 5005:9000
