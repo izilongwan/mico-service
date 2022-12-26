@@ -9,6 +9,6 @@ import com.common.entity.R;
 public class ExceptionHandlerAdvice {
     @ExceptionHandler
     public R<Object> handler(Exception e) {
-        return R.ERROR(e, e.getCause().toString());
+        return R.ERROR(e, e.getMessage());
     }
 }
