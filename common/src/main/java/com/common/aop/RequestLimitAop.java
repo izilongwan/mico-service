@@ -61,7 +61,7 @@ public class RequestLimitAop {
             Integer count = ((Integer) boundHashOps.get(countKey));
 
             if (count > requestLimitAnno.value()) {
-                throw new Exception("访问次数过多, 请稍后再试");
+                throw new RuntimeException("访问次数过多, 请稍后再试");
             }
 
             boundHashOps.increment(countKey, 1);
