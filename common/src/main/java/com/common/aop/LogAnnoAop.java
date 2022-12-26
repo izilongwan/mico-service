@@ -22,7 +22,7 @@ public class LogAnnoAop {
         System.out.println(logAnno);
     }
 
-    @Pointcut("@annotation(com.aop.inter.LogAnno)")
+    @Pointcut("@annotation(com.common.aop.anno.LogAnno)")
     public void anno() {
 
     }

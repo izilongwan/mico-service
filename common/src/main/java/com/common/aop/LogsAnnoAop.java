@@ -10,7 +10,7 @@ import com.common.aop.anno.LogsAnno;
 @Aspect
 @Configuration
 public class LogsAnnoAop {
-    @Pointcut("@annotation(com.aop.anno.LogsAnno)")
+    @Pointcut("@annotation(com.common.aop.anno.LogsAnno)")
     public void anno() {
 
     }
