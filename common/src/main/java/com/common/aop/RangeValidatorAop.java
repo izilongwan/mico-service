@@ -41,6 +41,7 @@ public class RangeValidatorAop {
             Class<?> clazz = parameter.getType();
             Field[] declaredFields = clazz.getDeclaredFields();
 
+            // 实例对象
             Object arg = Arrays.stream(args).filter(ar -> clazz.isAssignableFrom(ar.getClass())).findFirst().get();
 
             for (Field field : declaredFields) {
@@ -49,26 +50,27 @@ public class RangeValidatorAop {
 
                 if (annotationPresent) {
                     Object val = field.get(arg);
+                    String name = field.getName();
 
-                    if (val != null) {
-                        Integer value = (Integer) val;
+                    if (val == null) {
+                        return R.ERROR("[" + name + "]的属性值为空");
+                    }
 
-                        RangeValidatorAnno rangeValidatorAnno = field.getAnnotation(RangeValidatorAnno.class);
+                    Integer value = (Integer) val;
 
-                        long v = rangeValidatorAnno.value();
+                    RangeValidatorAnno rangeValidatorAnno = field.getAnnotation(RangeValidatorAnno.class);
 
-                        String name = field.getName();
+                    long v = rangeValidatorAnno.value();
 
-                        if (v != 0 && value != v) {
-                            return R.ERROR("[" + name + "]的属性值必须为: " + v);
-                        }
+                    if (v != 0 && value != v) {
+                        return R.ERROR("[" + name + "]的属性值必须为: " + v);
+                    }
 
-                        long max = rangeValidatorAnno.max();
-                        long min = rangeValidatorAnno.min();
+                    long max = rangeValidatorAnno.max();
+                    long min = rangeValidatorAnno.min();
 
-                        if (value > max || value < min) {
-                            return R.ERROR("[" + name + "]的属性值超出范围");
-                        }
+                    if (value > max || value < min) {
+                        return R.ERROR("[" + name + "]的属性值超出范围");
                     }
                 }
             }
