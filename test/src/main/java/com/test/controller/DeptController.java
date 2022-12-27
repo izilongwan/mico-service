@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.common.aop.anno.LogAnno;
 import com.common.aop.anno.RangeValidatorAnno;
 import com.common.aop.anno.RequestLimitAnno;
 import com.common.entity.R;
@@ -52,6 +53,8 @@ public class DeptController {
         return R.SUCCESS(deptMapper.selectById(id));
     }
 
+    @LogAnno
+    @LogAnno("oOo")
     @PostMapping("")
     public R<Dept> getDeptById2(@RequestBody Dept dept) {
         return R.SUCCESS(deptMapper.selectById(dept.getId()));
