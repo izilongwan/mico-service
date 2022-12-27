@@ -42,7 +42,10 @@ public class RangeValidatorAop {
             Field[] declaredFields = clazz.getDeclaredFields();
 
             // 实例对象
-            Object arg = Arrays.stream(args).filter(ar -> clazz.isAssignableFrom(ar.getClass())).findFirst().get();
+            Object arg = Arrays.stream(args)
+                    .filter(ar -> clazz.isAssignableFrom(ar.getClass()))
+                    .findFirst()
+                    .get();
 
             for (Field field : declaredFields) {
                 field.setAccessible(true);
