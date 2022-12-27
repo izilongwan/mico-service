@@ -19,6 +19,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.common.aop.anno.RequestLimitAnno;
+import com.common.entity.R;
 
 @Aspect
 @Configuration
@@ -58,13 +59,18 @@ public class RequestLimitAop {
 
             boundHashOps.expire(requestLimitAnno.time(), TimeUnit.MILLISECONDS);
         } else {
-            Integer count = ((Integer) boundHashOps.get(countKey));
+            Long count = boundHashOps.increment(countKey, 1);
 
-            if (count > requestLimitAnno.value()) {
-                throw new RuntimeException("访问次数过多, 请稍后再试");
+            if (count == null) {
+                count = 0L;
             }
 
-            boundHashOps.increment(countKey, 1);
+            if (count > requestLimitAnno.value()) {
+                String msg = "访问次数过多, 请稍后再试" + " (" + count + ")";
+                // throw new RuntimeException(msg);
+                return R.ERROR(msg);
+            }
+
             boundHashOps.put(timestampKey, System.currentTimeMillis() / 1000);
         }
 
