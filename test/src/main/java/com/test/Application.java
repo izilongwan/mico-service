@@ -7,6 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
 import com.common.advice.ExceptionHandlerAdvice;
+import com.common.aop.RangeValidatorAop;
 import com.common.aop.RequestLimitAop;
 import com.common.aop.TimecostAop;
 import com.common.config.MybatisPlusConfig;
@@ -14,6 +15,7 @@ import com.common.config.RedisConfig;
 
 @SpringBootApplication
 @ComponentScan(basePackages = { "com.test" }, basePackageClasses = {
+		RangeValidatorAop.class,
 		ExceptionHandlerAdvice.class,
 		RequestLimitAop.class,
 		TimecostAop.class,

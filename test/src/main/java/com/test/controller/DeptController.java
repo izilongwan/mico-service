@@ -5,10 +5,14 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.common.aop.anno.RangeValidatorAnno;
 import com.common.aop.anno.RequestLimitAnno;
 import com.common.entity.R;
 import com.test.dto.DeptDto;
@@ -41,5 +45,15 @@ public class DeptController {
     @GetMapping("list")
     public R<List<Dept>> getDeptList() {
         return R.SUCCESS(deptMapper.selectList(null));
+    }
+
+    @GetMapping("{id}")
+    public R<Dept> getDeptById(@PathVariable @RangeValidatorAnno(max = 10) Long id) {
+        return R.SUCCESS(deptMapper.selectById(id));
+    }
+
+    @PostMapping("")
+    public R<Dept> getDeptById2(@RequestBody Dept dept) {
+        return R.SUCCESS(deptMapper.selectById(dept.getId()));
     }
 }
