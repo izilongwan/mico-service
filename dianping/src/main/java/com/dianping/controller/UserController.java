@@ -1,6 +1,7 @@
 package com.dianping.controller;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -30,15 +31,15 @@ public class UserController {
 
     @GetMapping("cookie/set")
     @Transactional
-    public R<String> cookieSet(HttpServletResponse response) {
-        return R.SUCCESS(cookieService.cookieSet(response));
+    public R<String> cookieSet(HttpServletRequest request, HttpServletResponse response) {
+        return R.SUCCESS(cookieService.cookieSet(request, response));
     }
 
     @GetMapping("cookie/rm")
     @Transactional
-    public R<String> cookieRm(HttpServletResponse response,
+    public R<String> cookieRm(HttpServletRequest request, HttpServletResponse response,
             @CookieValue(name = "username", required = false) String username) {
-        return R.SUCCESS(cookieService.cookieRm(response, username));
+        return R.SUCCESS(cookieService.cookieRm(request, response, username));
     }
 
     @GetMapping("res")
