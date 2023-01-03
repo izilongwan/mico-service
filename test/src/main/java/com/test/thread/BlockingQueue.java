@@ -34,7 +34,7 @@ public class BlockingQueue<T> {
         lock.lock();
 
         try {
-            return (T) callback.get();
+            return callback.get();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
