@@ -10,7 +10,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.alibaba.fastjson.JSON;
 import com.common.entity.R;
-import com.dianping.entity.Goods;
 import com.dianping.entity.User;
 import com.dianping.util.ThreadLocalPool;
 

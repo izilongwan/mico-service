@@ -9,3 +9,7 @@ key:
 
 upload:
   base-path: E:\upload\
+
+jwt-config:
+  key: "@#$%!!@$EQEQWQEQQ"
+  ttl: 600000

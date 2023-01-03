@@ -52,6 +52,7 @@
 
         <jedis.version>4.1.1</jedis.version>
         <redisson.version>3.13.6</redisson.version>
+        <jjwt.version>0.9.1</jjwt.version>
 
         <hutool-all.version>5.8.5</hutool-all.version>
         <spring-cloud.version>2020.0.1</spring-cloud.version>
@@ -153,6 +154,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
