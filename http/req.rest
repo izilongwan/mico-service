@@ -6,7 +6,7 @@
 @FILE_CONTENT_TYPE = Content-Type: multipart/form-data;
 
 # @name Req
-POST {{HOST}}:{{PORT}}/dianping/user/test/comsume/1 {{{{VERSION}}}}
+POST {{HOST}}:{{PORT}}/dianping/user/test/comsume/1 {{VERSION}}
 {{CONTENT_TYPE}}
 
 {
@@ -15,7 +15,4 @@ POST {{HOST}}:{{PORT}}/dianping/user/test/comsume/1 {{{{VERSION}}}}
 
 ###
 # @name Res
-GET {{HOST}}:{{PORT}}/dianping/user/res {{{{VERSION}}}}
-
-### @name GetTomcat
-GET {{HOST}}/demo/1475.gif HTTP/1.1
+GET {{HOST}}:{{PORT}}/dianping/user/res {{VERSION}}
