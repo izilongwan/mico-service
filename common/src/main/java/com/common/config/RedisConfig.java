@@ -10,8 +10,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisConfig {
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
+    public <K, V> RedisTemplate<K, V> redisTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<K, V> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
 
         // String的序列化方式

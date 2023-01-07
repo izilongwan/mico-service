@@ -17,8 +17,10 @@ import com.dianping.entity.User;
 import com.dianping.util.ThreadLocalPool;
 
 import cn.hutool.core.bean.BeanUtil;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class RefreshInterceptor implements HandlerInterceptor {
     @Resource
     RedisTemplate<String, Object> redisTemplate;
@@ -30,6 +32,11 @@ public class RefreshInterceptor implements HandlerInterceptor {
         Cookie[] cookies = request.getCookies();
 
         if (cookies == null) {
+            return true;
+        }
+
+        if (redisTemplate == null) {
+            log.error("redisTemplate = {}", redisTemplate);
             return true;
         }
 
