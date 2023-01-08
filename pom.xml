@@ -53,6 +53,8 @@
         <jedis.version>4.1.1</jedis.version>
         <redisson.version>3.13.6</redisson.version>
         <jjwt.version>0.9.1</jjwt.version>
+        <poi-ooxml.version>5.2.2</poi-ooxml.version>
+        <poi-ooxml-schemas.version>4.1.2</poi-ooxml-schemas.version>
 
         <hutool-all.version>5.8.5</hutool-all.version>
         <spring-cloud.version>2020.0.1</spring-cloud.version>
@@ -159,6 +161,18 @@
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
                 <version>${jjwt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi-ooxml.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml-schemas</artifactId>
+                <version>${poi-ooxml-schemas.version}</version>
             </dependency>
 
         </dependencies>
