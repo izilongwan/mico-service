@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j(topic = "cn")
+@Slf4j
 public class ThreadPool {
     class Worker extends Thread {
 

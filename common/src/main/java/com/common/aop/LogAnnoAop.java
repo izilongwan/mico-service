@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Aspect
 @Configuration
-@Slf4j(topic = "cn")
+@Slf4j
 public class LogAnnoAop {
     @AfterReturning("@annotation(logAnno)")
     public void doo(LogAnno logAnno) {

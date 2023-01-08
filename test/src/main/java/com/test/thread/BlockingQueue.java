@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j(topic = "cn")
+@Slf4j
 public class BlockingQueue<T> {
     // 队列
     Deque<T> queue = new ArrayDeque<>();

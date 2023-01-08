@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j(topic = "cn")
+@Slf4j
 @Configuration
 public class MybatisPlusConfig implements MetaObjectHandler {
     @Bean
