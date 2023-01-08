@@ -6,7 +6,7 @@
         </encoder>
     </appender>
 
-    <logger name="cn" level="debug" additivity="false">
+    <logger name="com" level="debug" additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>
 
