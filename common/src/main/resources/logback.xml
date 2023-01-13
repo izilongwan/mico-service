@@ -6,6 +6,18 @@
         </encoder>
     </appender>
 
+    <logger name="com.zaxxer" level="error">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="com.alibaba" level="error">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="com.baomidou" level="error">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
     <logger name="com" level="debug" additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>
