@@ -31,12 +31,12 @@ public class RefreshInterceptor implements HandlerInterceptor {
 
         Cookie[] cookies = request.getCookies();
 
-        if (cookies == null) {
+        if (redisTemplate == null) {
+            log.error("redisTemplate = {}", redisTemplate);
             return true;
         }
 
-        if (redisTemplate == null) {
-            log.error("redisTemplate = {}", redisTemplate);
+        if (cookies == null) {
             return true;
         }
 
@@ -44,7 +44,6 @@ public class RefreshInterceptor implements HandlerInterceptor {
             if (Objects.equals(cookie.getName(), "username") && !Objects.equals(cookie.getValue(), null)) {
                 String key = "test:user:h" + cookie.getValue();
                 Map<Object, Object> entries = redisTemplate.opsForHash().entries(key);
-                ;
 
                 if (!Objects.equals(entries, null)) {
                     redisTemplate.expire(key, 1, TimeUnit.DAYS);
