@@ -43,7 +43,7 @@ public class CookieServiceImpl implements CookieService {
         opsForHash.put(key, "time", System.currentTimeMillis());
         redisTemplate.expire(key, 1, TimeUnit.DAYS);
 
-        return "0";
+        return "1";
     }
 
     @Override
