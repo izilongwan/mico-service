@@ -30,12 +30,16 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
+
         <commons-lang.version>2.6</commons-lang.version>
         <mybatis-plus-boot-starter.version>3.4.2</mybatis-plus-boot-starter.version>
+        <mybatis-plus-generator.version>3.4.1</mybatis-plus-generator.version>
         <spring-boot-starter-mail.version>2.2.6.RELEASE</spring-boot-starter-mail.version>
         <fastjson.version>2.0.10</fastjson.version>
         <jetcache-starter-redis.version>2.6.2</jetcache-starter-redis.version>
         <knife4j-spring-boot-starter.version>2.0.9</knife4j-spring-boot-starter.version>
+
+        <boot.version>2.4.6</boot.version>
 
         <mico-service.version>1.0</mico-service.version>
         <common.version>1.0</common.version>
@@ -137,6 +141,7 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -173,6 +178,18 @@
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml-schemas</artifactId>
                 <version>${poi-ooxml-schemas.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus-generator.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-freemarker</artifactId>
+                <version>${boot.version}</version>
             </dependency>
 
         </dependencies>
