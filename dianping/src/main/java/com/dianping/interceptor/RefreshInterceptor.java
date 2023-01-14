@@ -25,6 +25,16 @@ public class RefreshInterceptor implements HandlerInterceptor {
     @Resource
     RedisTemplate<String, Object> redisTemplate;
 
+    // add Interceptor 使用new的方式 需要使用构造函数注入redisTemplate
+    public RefreshInterceptor(RedisTemplate<String, Object> redisTemplate) {
+        if (this.redisTemplate == null) {
+            this.redisTemplate = redisTemplate;
+        }
+    }
+
+    public RefreshInterceptor() {
+    }
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {

@@ -38,7 +38,7 @@ public class UserController {
     @GetMapping("cookie/rm")
     @Transactional
     public R<String> cookieRm(HttpServletRequest request, HttpServletResponse response,
-            @CookieValue(name = "username", required = false) String username) {
+            @CookieValue(name = "username") String username) {
         return R.SUCCESS(cookieService.cookieRm(request, response, username));
     }
 

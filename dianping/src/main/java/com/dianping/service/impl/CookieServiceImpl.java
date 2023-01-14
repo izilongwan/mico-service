@@ -48,6 +48,12 @@ public class CookieServiceImpl implements CookieService {
 
     @Override
     public String cookieRm(HttpServletRequest request, HttpServletResponse response, String username) {
+        String key = cookiePrefix + username;
+
+        if (redisTemplate.opsForHash().get(key, "name") == null) {
+            return "0";
+        }
+
         String serverName = request.getServerName();
         Cookie cookie = new Cookie("username", "");
 
@@ -57,7 +63,6 @@ public class CookieServiceImpl implements CookieService {
         cookie.setDomain(serverName);
         response.addCookie(cookie);
 
-        String key = cookiePrefix + username;
         redisTemplate.delete(key);
         return "1";
     }
