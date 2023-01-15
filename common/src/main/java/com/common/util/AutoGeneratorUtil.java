@@ -1,5 +1,6 @@
 package com.common.util;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -84,7 +85,7 @@ public class AutoGeneratorUtil {
 	public static void init() {
 		String scannerModule = scanner("模块名");
 		String scannerDatabase = scanner("数据库名");
-		String scannerTable = scanner("表名 (多个表名使用逗号分隔)");
+		String scannerTable = scanner("表名 (多个表名使用逗号分隔，*为所有表)");
 
 		genCode(scannerDatabase, scannerModule, scannerTable);
 	}
@@ -114,9 +115,10 @@ public class AutoGeneratorUtil {
 
 		// 数据源配置
 		DataSourceConfig dsc = new DataSourceConfig();
+		boolean isRootDataBase = Objects.equals("/", scannerDatabase);
 		String url = String.format(
-				"jdbc:mysql://127.0.0.1:3306/%s?useUnicode=true&useSSL=false&characterEncoding=utf8",
-				scannerDatabase);
+				"jdbc:mysql://127.0.0.1:3306%s?useUnicode=true&useSSL=false&characterEncoding=utf8",
+				isRootDataBase ? "" : "/" + scannerDatabase);
 		dsc.setUrl(url);
 		// dsc.setSchemaName("public");
 		dsc.setDriverName("com.mysql.cj.jdbc.Driver");
@@ -138,7 +140,7 @@ public class AutoGeneratorUtil {
 			}
 		};
 		List<FileOutConfig> focList = new ArrayList<>();
-		String[] tableNames = scannerTable.split(", |,");
+		String[] tableNames = getTableName(isRootDataBase ? null : scannerDatabase, scannerTable, dsc);
 
 		Stream.of(tableNames).forEach(
 				(o) -> focList.add(new FileOutConfigExtension("/templates/mapper.xml.ftl", projectPath, modulePath)));
@@ -164,6 +166,30 @@ public class AutoGeneratorUtil {
 		log.debug("[START] 准备生成文件...");
 		mpg.execute();
 		log.debug("[END] 文件生成完成!!!");
+	}
+
+	private static String[] getTableName(String scannerDatabase, String scannerTable, DataSourceConfig dsc) {
+		if (!Objects.equals("*", scannerTable)) {
+			return scannerTable.split(", |,");
+		}
+
+		ArrayList<String> list = new ArrayList<>();
+
+		try {
+			ResultSet catalogs = dsc.getConn().getMetaData().getTables(scannerDatabase, null, null,
+					new String[] { "TABLE" });
+
+			while (catalogs.next()) {
+				String name = catalogs.getString("TABLE_NAME");
+				list.add(name);
+			}
+
+			log.debug("扫描[{}]数据库下共有[{}]张表: {}", scannerDatabase == null ? "/" : scannerDatabase, list.size(), list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list.toArray(new String[] {});
 	}
 
 }
