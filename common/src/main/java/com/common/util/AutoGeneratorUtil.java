@@ -59,7 +59,7 @@ public class AutoGeneratorUtil {
 	 * 读取控制台内容
 	 * </p>
 	 */
-	public static String scanner(String tip) {
+	private static String scanner(String tip) {
 		Scanner scanner = new Scanner(System.in);
 		StringBuilder help = new StringBuilder();
 		help.append("请输入" + tip + "：");
@@ -78,17 +78,25 @@ public class AutoGeneratorUtil {
 	 * RUN THIS
 	 */
 	public static void main(String[] args) {
-		init("test");
+		init();
 	}
 
-	private static void init(String database) {
+	public static void init() {
+		String scannerModule = scanner("模块名");
+		String scannerDatabase = scanner("数据库名");
+		String scannerTable = scanner("表名 (多个表名使用逗号分隔)");
+
+		genCode(scannerDatabase, scannerModule, scannerTable);
+	}
+
+	public static void init(String database) {
 		String scannerModule = scanner("模块名");
 		String scannerTable = scanner("表名 (多个表名使用逗号分隔)");
 
 		genCode(database, scannerModule, scannerTable);
 	}
 
-	private static void genCode(String database, String scannerModule, String scannerTable) {
+	public static void genCode(String scannerDatabase, String scannerModule, String scannerTable) {
 		boolean isRootModule = Objects.equals("/", scannerModule);
 		String modulePath = isRootModule ? "" : "/" + scannerModule;
 
@@ -108,7 +116,7 @@ public class AutoGeneratorUtil {
 		DataSourceConfig dsc = new DataSourceConfig();
 		String url = String.format(
 				"jdbc:mysql://127.0.0.1:3306/%s?useUnicode=true&useSSL=false&characterEncoding=utf8",
-				database);
+				scannerDatabase);
 		dsc.setUrl(url);
 		// dsc.setSchemaName("public");
 		dsc.setDriverName("com.mysql.cj.jdbc.Driver");
