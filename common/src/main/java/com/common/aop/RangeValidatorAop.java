@@ -89,7 +89,7 @@ public class RangeValidatorAop {
         return proceedingJoinPoint.proceed();
     }
 
-    @Around("anno()")
+    @Around("range()")
     public Object aroundCheckParameter(ProceedingJoinPoint proceedingJoinPoint)
             throws Throwable {
         // 参数属性值
