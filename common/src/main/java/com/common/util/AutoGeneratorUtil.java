@@ -80,6 +80,7 @@ public class AutoGeneratorUtil {
 	 */
 	public static void main(String[] args) {
 		init();
+		// genCode("test", "test", "dept_log");
 	}
 
 	public static void init() {
@@ -129,7 +130,7 @@ public class AutoGeneratorUtil {
 		// 包配置
 		PackageConfig pc = new PackageConfig();
 		// pc.setModuleName(scannerModule);
-		pc.setParent("com");
+		pc.setParent("com" + modulePath.replace("/", "."));
 		mpg.setPackageInfo(pc);
 
 		// 自定义配置
