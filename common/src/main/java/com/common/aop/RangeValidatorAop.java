@@ -6,9 +6,12 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +19,11 @@ import org.springframework.context.annotation.Configuration;
 import com.common.aop.anno.RangeValidatorAnno;
 import com.common.entity.R;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Configuration
 @Aspect
+@Slf4j
 public class RangeValidatorAop {
     @Pointcut("execution(public * com..controller.*Controller.*(..))")
     public void range() {
@@ -83,7 +89,7 @@ public class RangeValidatorAop {
         return proceedingJoinPoint.proceed();
     }
 
-    @Around("range()")
+    @Around("anno()")
     public Object aroundCheckParameter(ProceedingJoinPoint proceedingJoinPoint)
             throws Throwable {
         // 参数属性值
@@ -105,8 +111,14 @@ public class RangeValidatorAop {
 
                 if (annotationPresent) {
                     RangeValidatorAnno rangeValidatorAnno = ((RangeValidatorAnno) annotation);
-                    Long value = (Long) args[i];
                     String name = names[i];
+
+                    if (args[i] == null) {
+                        return R.ERROR("[" + name + "]的属性值为空");
+                    }
+
+                    Long value = (Long) args[i];
+
                     long v = rangeValidatorAnno.value();
 
                     if (v != 0 && value != v) {
@@ -124,5 +136,15 @@ public class RangeValidatorAop {
         }
 
         return proceedingJoinPoint.proceed();
+    }
+
+    @Before("anno()")
+    public void before(JoinPoint joinPoint) {
+        log.debug("{}", joinPoint);
+    }
+
+    @After("anno()")
+    public void after(JoinPoint joinPoint) {
+        log.debug("{}", joinPoint);
     }
 }

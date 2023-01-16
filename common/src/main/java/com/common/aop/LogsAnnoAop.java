@@ -1,7 +1,11 @@
 package com.common.aop;
 
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,8 +22,25 @@ public class LogsAnnoAop {
 
     }
 
+    @Before("anno()")
+    public void before(JoinPoint joinPoint) {
+        log.debug("before {}", joinPoint);
+    }
+
+    @Around("anno()")
+    public Object around(ProceedingJoinPoint proceedingJoinPoint) {
+        log.debug("around {}", proceedingJoinPoint);
+
+        try {
+            return proceedingJoinPoint.proceed();
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @AfterReturning("@annotation(logsAnno)")
-    public void after(LogsAnno logsAnno) {
-        log.debug("{}", logsAnno);
+    public void afterReturning(LogsAnno logsAnno) {
+        log.debug("afterReturning {}", logsAnno);
     }
 }
