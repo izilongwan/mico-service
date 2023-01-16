@@ -5,3 +5,5 @@ spring:
   cloud:
     nacos:
       server-addr: localhost:8848
+      discovery:
+        cluster-name: HZ # 集群名称 HZ杭州
