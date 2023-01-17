@@ -37,6 +37,7 @@ public class DeptController {
         return restTemplate.getForObject(url, R.class, "");
     }
 
+    @RangeValidatorAnno
     @GetMapping("")
     public R<List<DeptDto>> getDept() {
         return R.SUCCESS(deptDtoMapper.select());

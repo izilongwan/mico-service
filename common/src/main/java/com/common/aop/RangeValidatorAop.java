@@ -25,72 +25,23 @@ import lombok.extern.slf4j.Slf4j;
 @Aspect
 @Slf4j
 public class RangeValidatorAop {
+    @Before("anno()")
+    public void before(JoinPoint joinPoint) {
+        log.debug("before {}", joinPoint);
+    }
+
+    @After("anno()")
+    public void after(JoinPoint joinPoint) {
+        log.debug("after {}", joinPoint);
+    }
+
     @Pointcut("execution(public * com..controller.*Controller.*(..))")
-    public void range() {
+    private void range() {
 
     }
 
-    @Pointcut("@annotation(com.common.aop.anno.RangeValidatorAnno)")
-    public void anno() {
-
-    }
-
-    @Around("range()")
-    public Object aroundCheckField(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        MethodSignature methodSignature = ((MethodSignature) proceedingJoinPoint.getSignature());
-
-        Parameter[] parameters = methodSignature.getMethod().getParameters();
-
-        Object[] args = proceedingJoinPoint.getArgs();
-
-        for (Parameter parameter : parameters) {
-            Class<?> clazz = parameter.getType();
-            Field[] declaredFields = clazz.getDeclaredFields();
-
-            // 实例对象
-            Object arg = Arrays.stream(args)
-                    .filter(ar -> clazz.isAssignableFrom(ar.getClass()))
-                    .findFirst()
-                    .get();
-
-            for (Field field : declaredFields) {
-                field.setAccessible(true);
-                boolean annotationPresent = field.isAnnotationPresent(RangeValidatorAnno.class);
-
-                if (annotationPresent) {
-                    Object val = field.get(arg);
-                    String name = field.getName();
-
-                    if (val == null) {
-                        return R.ERROR("[" + name + "]的属性值为空");
-                    }
-
-                    Integer value = (Integer) val;
-
-                    RangeValidatorAnno rangeValidatorAnno = field.getAnnotation(RangeValidatorAnno.class);
-
-                    long v = rangeValidatorAnno.value();
-
-                    if (v != 0 && value != v) {
-                        return R.ERROR("[" + name + "]的属性值必须为: " + v);
-                    }
-
-                    long max = rangeValidatorAnno.max();
-                    long min = rangeValidatorAnno.min();
-
-                    if (value > max || value < min) {
-                        return R.ERROR("[" + name + "]的属性值超出范围");
-                    }
-                }
-            }
-
-        }
-
-        return proceedingJoinPoint.proceed();
-    }
-
-    @Around("range()")
-    public Object aroundCheckParameter(ProceedingJoinPoint proceedingJoinPoint)
+    @Around("range() || anno()")
+    private Object aroundCheckParameter(ProceedingJoinPoint proceedingJoinPoint)
             throws Throwable {
         // 参数属性值
         Object[] args = proceedingJoinPoint.getArgs();
@@ -112,24 +63,12 @@ public class RangeValidatorAop {
                 if (annotationPresent) {
                     RangeValidatorAnno rangeValidatorAnno = ((RangeValidatorAnno) annotation);
                     String name = names[i];
+                    Object value = args[i];
 
-                    if (args[i] == null) {
-                        return R.ERROR("[" + name + "]的属性值为空");
-                    }
+                    String msg = checkValid(rangeValidatorAnno, name, value);
 
-                    Long value = (Long) args[i];
-
-                    long v = rangeValidatorAnno.value();
-
-                    if (v != 0 && value != v) {
-                        return R.ERROR("[" + name + "]的属性值必须为: " + v);
-                    }
-
-                    long max = rangeValidatorAnno.max();
-                    long min = rangeValidatorAnno.min();
-
-                    if (value > max || value < min) {
-                        return R.ERROR("[" + name + "]的属性值超出范围");
+                    if (msg != null) {
+                        return R.ERROR(msg);
                     }
                 }
             }
@@ -138,13 +77,71 @@ public class RangeValidatorAop {
         return proceedingJoinPoint.proceed();
     }
 
-    @Before("anno()")
-    public void before(JoinPoint joinPoint) {
-        log.debug("{}", joinPoint);
+    @Pointcut("@annotation(com.common.aop.anno.RangeValidatorAnno)")
+    private void anno() {
+
     }
 
-    @After("anno()")
-    public void after(JoinPoint joinPoint) {
-        log.debug("{}", joinPoint);
+    @Around("range() || anno()")
+    private Object aroundCheckField(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        MethodSignature methodSignature = ((MethodSignature) proceedingJoinPoint.getSignature());
+
+        Parameter[] parameters = methodSignature.getMethod().getParameters();
+
+        Object[] args = proceedingJoinPoint.getArgs();
+
+        for (Parameter parameter : parameters) {
+            Class<?> clazz = parameter.getType();
+            Field[] declaredFields = clazz.getDeclaredFields();
+
+            // 实例对象
+            Object arg = Arrays.stream(args)
+                    .filter(ar -> clazz.isAssignableFrom(ar.getClass()))
+                    .findFirst()
+                    .get();
+
+            for (Field field : declaredFields) {
+                field.setAccessible(true);
+                boolean annotationPresent = field.isAnnotationPresent(RangeValidatorAnno.class);
+
+                if (annotationPresent) {
+                    RangeValidatorAnno rangeValidatorAnno = field.getAnnotation(RangeValidatorAnno.class);
+                    Object value = field.get(arg);
+                    String name = field.getName();
+
+                    String msg = checkValid(rangeValidatorAnno, name, value);
+
+                    if (msg != null) {
+                        return R.ERROR(msg);
+                    }
+                }
+            }
+
+        }
+
+        return proceedingJoinPoint.proceed();
     }
+
+    private String checkValid(RangeValidatorAnno rangeValidatorAnno, String name, Object val) {
+        if (val == null) {
+            return String.format("属性值[%s]为空", name);
+        }
+
+        long value = val instanceof Integer ? ((Integer) val).longValue() : (Long) val;
+        long v = rangeValidatorAnno.value();
+
+        if (v != 0 && value != v) {
+            return String.format("属性值[%s]错误", name);
+        }
+
+        long max = rangeValidatorAnno.max();
+        long min = rangeValidatorAnno.min();
+
+        if (value > max || value < min) {
+            return String.format("属性值[%s]超出范围", name);
+        }
+
+        return null;
+    }
+
 }
