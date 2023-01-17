@@ -186,7 +186,7 @@ public class OrderServiceImpl implements OrderService {
     public String genOrderId(String orderKey) {
         Long increment = redisTemplate.opsForValue()
                 .increment(orderKey + ":" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-        return "" + System.currentTimeMillis() / 1000 + "_" + increment.intValue() + "";
+        return "" + System.currentTimeMillis() + "_" + increment.intValue() + "";
     }
 
     public Integer handleOrder(Goods goods, String uId) {
@@ -198,7 +198,7 @@ public class OrderServiceImpl implements OrderService {
         Long num = redisTemplate.execute(
                 ORDER_SCRIPT,
                 Arrays.asList(orderKey, userKey),
-                System.currentTimeMillis() / 1000,
+                System.currentTimeMillis(),
                 uId, goodsId, orderId,
                 streamName);
 

@@ -54,7 +54,7 @@ public class RequestLimitAop {
 
             boundHashOps.put(ipKey, remoteAddr);
             boundHashOps.put(countKey, 1);
-            boundHashOps.put(timestampKey, System.currentTimeMillis() / 1000);
+            boundHashOps.put(timestampKey, System.currentTimeMillis());
 
             boundHashOps.expire(requestLimitAnno.time(), TimeUnit.MILLISECONDS);
         } else {
@@ -70,7 +70,7 @@ public class RequestLimitAop {
                 return R.ERROR(msg);
             }
 
-            boundHashOps.put(timestampKey, System.currentTimeMillis() / 1000);
+            boundHashOps.put(timestampKey, System.currentTimeMillis());
         }
 
         return proceedingJoinPoint.proceed();
