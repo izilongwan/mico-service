@@ -65,7 +65,7 @@ public class RequestLimitAop {
             }
 
             if (count > requestLimitAnno.value()) {
-                String msg = "访问次数过多, 请稍后再试" + " (" + count + ")";
+                String msg = String.format("访问次数过多[%s], 请稍后再试!", count);
                 // throw new RuntimeException(msg);
                 return R.ERROR(msg);
             }
