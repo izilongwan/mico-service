@@ -23,6 +23,7 @@ import com.test.mapper.DeptMapper;
 
 @RestController
 @RequestMapping("test/dept")
+@RequestLimitAnno
 public class DeptController {
     @Resource
     RestTemplate restTemplate;

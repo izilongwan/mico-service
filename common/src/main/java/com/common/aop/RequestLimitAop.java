@@ -10,6 +10,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -27,16 +28,19 @@ public class RequestLimitAop {
     String ipKey = "ip";
     String timestampKey = "timestamp";
 
+    @Value("${spring.application.name:}")
+    String APP_NAME;
+
     @Resource
     RedisTemplate<String, Object> redisTemplate;
 
     @Pointcut("@annotation(com.common.aop.anno.RequestLimitAnno)")
-    public void requestLimit() {
+    private void requestLimit() {
 
     }
 
     @Around("@annotation(requestLimitAnno)")
-    public Object around(ProceedingJoinPoint proceedingJoinPoint, RequestLimitAnno requestLimitAnno) throws Throwable {
+    private Object around(ProceedingJoinPoint proceedingJoinPoint, RequestLimitAnno requestLimitAnno) throws Throwable {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 
         ServletRequestAttributes req = ((ServletRequestAttributes) requestAttributes);
@@ -44,18 +48,23 @@ public class RequestLimitAop {
         HttpServletRequest request = req.getRequest();
 
         String requestURI = request.getRequestURI();
-        String key = requestLimitAnno.keyPrefix() + requestURI;
+        String remoteAddr = request.getRemoteAddr();
+        // [keyPrefix]:[classpath]:[route-path]:[ip]
+        String key = String.format(
+                "%s:%s:%s:%s:%s",
+                APP_NAME,
+                requestLimitAnno.keyPrefix(),
+                proceedingJoinPoint.getTarget().getClass().toString().replace("class ", ""),
+                requestURI,
+                remoteAddr);
         BoundHashOperations<String, Object, Object> boundHashOps = redisTemplate.boundHashOps(key);
 
         Object object = boundHashOps.get(countKey);
 
         if (Objects.equals(object, null)) {
-            String remoteAddr = request.getRemoteAddr();
-
             boundHashOps.put(ipKey, remoteAddr);
             boundHashOps.put(countKey, 1);
             boundHashOps.put(timestampKey, System.currentTimeMillis());
-
             boundHashOps.expire(requestLimitAnno.time(), TimeUnit.MILLISECONDS);
         } else {
             Long count = boundHashOps.increment(countKey, 1);
