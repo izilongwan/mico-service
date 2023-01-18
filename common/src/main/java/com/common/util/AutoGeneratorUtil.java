@@ -129,8 +129,8 @@ public class AutoGeneratorUtil {
 
 		// 包配置
 		PackageConfig pc = new PackageConfig();
-		// pc.setModuleName(scannerModule);
-		pc.setParent("com" + modulePath.replace("/", "."));
+		pc.setModuleName(scannerModule);
+		pc.setParent("com");
 		mpg.setPackageInfo(pc);
 
 		// 自定义配置
