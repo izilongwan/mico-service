@@ -127,11 +127,20 @@ public class RangeValidatorAop {
             return String.format("属性值[%s]为空", name);
         }
 
-        long value = val instanceof Integer ? ((Integer) val).longValue() : (Long) val;
+        long value = 0;
+
+        if (val instanceof Integer) {
+            value = ((Integer) val).longValue();
+        } else if (val instanceof Long) {
+            value = (Long) val;
+        } else {
+            return String.format("属性值[%s]类型错误", name);
+        }
+
         long v = rangeValidatorAnno.value();
 
         if (v != 0 && value != v) {
-            return String.format("属性值[%s]错误", name);
+            return String.format("属性值[%s]不匹配", name);
         }
 
         long max = rangeValidatorAnno.max();
