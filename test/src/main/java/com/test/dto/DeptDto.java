@@ -7,9 +7,11 @@ import com.test.entity.Emp;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
+@ToString
 public class DeptDto extends Dept {
 
     public DeptDto() {
@@ -25,10 +27,11 @@ public class DeptDto extends Dept {
     public Emp emp;
 
     // 手动重写继承的属性
-    @Override
-    public String toString() {
-        return "DeptDto [id=" + id + ", name=" + name + ", createTime=" + createTime + ", count=" + count + ", names="
-                + names + ", emps=" + emps + ", emp=" + emp + "]";
-    }
+    // @Override
+    // public String toString() {
+    // return "DeptDto [id=" + id + ", name=" + name + ", createTime=" + createTime
+    // + ", count=" + count + ", names="
+    // + names + ", emps=" + emps + ", emp=" + emp + "]";
+    // }
 
 }
