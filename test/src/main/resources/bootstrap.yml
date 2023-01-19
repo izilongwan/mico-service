@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: test
+  cloud:
+    nacos:
+      discovery:
+        cluster-name: WH
+      config:
+        shared-configs:
+          - data-id: info.yml
+            refresh: true
+        extension-configs:
+          - data-id: pattern.yml
+            refresh: true
