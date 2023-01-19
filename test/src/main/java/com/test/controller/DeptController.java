@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.common.aop.anno.LogAnno;
 import com.common.aop.anno.RangeValidatorAnno;
 import com.common.aop.anno.RequestLimitAnno;
@@ -48,6 +49,13 @@ public class DeptController {
     @GetMapping("list")
     public R<List<Dept>> getDeptList() {
         return R.SUCCESS(deptMapper.selectList(null));
+    }
+
+    @GetMapping("list/{current}/{pageSize}")
+    public R<Page<Dept>> getDeptListPage(@PathVariable Integer current, @PathVariable Integer pageSize) {
+        Page<Dept> page = new Page<>(current, pageSize);
+
+        return R.SUCCESS(deptMapper.selectPage(page, null));
     }
 
     @GetMapping("{id}")
