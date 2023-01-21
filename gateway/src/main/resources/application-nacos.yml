@@ -20,6 +20,9 @@ spring:
           uri: lb://test
           predicates:
             - Path=/test/**
+            - Cookie=code, \d{4}
+            - Cookie=x, x
+            - Header=x-name
         - id: dianping
           uri: lb://dianping
           predicates:

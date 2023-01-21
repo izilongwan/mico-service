@@ -11,7 +11,7 @@ import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ToString
+@ToString(callSuper = true)
 public class DeptDto extends Dept {
 
     public DeptDto() {
