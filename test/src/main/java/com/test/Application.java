@@ -6,23 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
-import com.common.advice.ExceptionHandlerAdvice;
-import com.common.aop.LogAnnoAop;
-import com.common.aop.RangeValidatorAop;
-import com.common.aop.RequestLimitAop;
-import com.common.aop.TimecostAop;
-import com.common.config.MybatisPlusConfig;
-import com.common.config.RedisConfig;
-
 @SpringBootApplication
-@ComponentScan(basePackages = { "com.test" }, basePackageClasses = {
-		LogAnnoAop.class,
-		RangeValidatorAop.class,
-		ExceptionHandlerAdvice.class,
-		RequestLimitAop.class,
-		TimecostAop.class,
-		MybatisPlusConfig.class,
-		RedisConfig.class })
+@ComponentScan(basePackages = { "com.test", "com.common.aop", "com.common.config", "com.common.advice" })
 // @ComponentScan({ "com.test", "com.common.aop" })
 @MapperScan({ "com.test.mapper", "com.test.dto" })
 @EnableFeignClients({ "com.feignapi.client" })

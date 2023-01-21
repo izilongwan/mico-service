@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.common.aop.anno.LogAnno;
 import com.common.aop.anno.RangeValidatorAnno;
 import com.common.aop.anno.RequestLimitAnno;
+import com.common.aop.anno.ValidatorAnno;
 import com.common.entity.R;
 import com.test.dto.DeptDto;
 import com.test.entity.Dept;
@@ -52,7 +53,9 @@ public class DeptController {
     }
 
     @GetMapping("list/{current}/{pageSize}")
-    public R<Page<Dept>> getDeptListPage(@PathVariable Integer current, @PathVariable Integer pageSize) {
+    public R<Page<Dept>> getDeptListPage(
+            @ValidatorAnno(value = "[1-9]\\d?") @PathVariable Integer current,
+            @ValidatorAnno(pattern = "[1-9]\\d?") @PathVariable Integer pageSize) {
         Page<Dept> page = new Page<>(current, pageSize);
 
         return R.SUCCESS(deptMapper.selectPage(page, null));
