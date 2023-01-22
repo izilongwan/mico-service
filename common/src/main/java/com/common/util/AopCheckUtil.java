@@ -52,6 +52,7 @@ public class AopCheckUtil {
         return null;
     }
 
+    // 获取类属性注解
     public static Object checkField(
             ProceedingJoinPoint proceedingJoinPoint,
             Function<ParamBo, Object> cb) {
