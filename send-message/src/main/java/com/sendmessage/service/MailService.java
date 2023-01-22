@@ -1,7 +1,5 @@
 package com.sendmessage.service;
 
-import java.util.Map;
-
 import com.sendmessage.entity.Mail;
 
 public interface MailService {

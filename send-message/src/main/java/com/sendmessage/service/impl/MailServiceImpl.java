@@ -2,8 +2,6 @@ package com.sendmessage.service.impl;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
