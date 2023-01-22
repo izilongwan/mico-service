@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.common.aop.anno.NotNullAnno;
 import com.common.aop.anno.ValidatorAnno;
 
 import lombok.AllArgsConstructor;
@@ -14,9 +15,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Dept implements Serializable {
-    // @RangeValidatorAnno(max = 100)
     @ValidatorAnno("[1-9]")
     public Integer id;
+
+    @NotNullAnno
     public String name;
 
     @TableField(fill = FieldFill.INSERT)

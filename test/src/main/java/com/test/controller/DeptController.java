@@ -14,7 +14,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.common.aop.anno.LogAnno;
-import com.common.aop.anno.RangeValidatorAnno;
 import com.common.aop.anno.RequestLimitAnno;
 import com.common.aop.anno.ValidatorAnno;
 import com.common.entity.R;
@@ -40,7 +39,7 @@ public class DeptController {
         return restTemplate.getForObject(url, R.class, "");
     }
 
-    @RangeValidatorAnno
+    @ValidatorAnno
     @GetMapping("")
     public R<List<DeptDto>> getDept() {
         return R.SUCCESS(deptDtoMapper.select());
@@ -62,7 +61,7 @@ public class DeptController {
     }
 
     @GetMapping("{id}")
-    public R<Dept> getDeptById(@PathVariable @RangeValidatorAnno(max = 10) Long id) {
+    public R<Dept> getDeptById(@PathVariable @ValidatorAnno("\\d") Long id) {
         return R.SUCCESS(deptMapper.selectById(id));
     }
 

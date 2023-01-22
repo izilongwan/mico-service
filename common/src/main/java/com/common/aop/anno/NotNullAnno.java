@@ -7,12 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Documented
-@Target({ ElementType.PARAMETER, ElementType.FIELD, ElementType.METHOD })
+@Target({ ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.LOCAL_VARIABLE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RangeValidatorAnno {
-    long min() default Long.MIN_VALUE;
+public @interface NotNullAnno {
 
-    long max() default Long.MAX_VALUE;
-
-    long value() default 0;
 }
