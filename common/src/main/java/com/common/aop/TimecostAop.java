@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.common.entity.R;
 
@@ -35,7 +36,10 @@ public class TimecostAop {
         if (data instanceof R) {
             R<Object> rs = (R<Object>) data;
             rs.setTimecost(System.currentTimeMillis() - ts);
+            ServletRequestAttributes reqAttrs = (ServletRequestAttributes) attrs;
+            String path = reqAttrs.getRequest().getRequestURI();
 
+            rs.setPath(path);
             return rs;
         }
 
