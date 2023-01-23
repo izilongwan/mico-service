@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -88,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
 
         Integer store = u.getStore();
 
-        if (u == null || store <= 0) {
+        if (Objects.isNull(u) || store <= 0) {
             return 1;
         }
 
@@ -108,7 +109,7 @@ public class OrderServiceImpl implements OrderService {
 
         Integer store = u.getStore();
 
-        if (u == null || store <= 0) {
+        if (Objects.isNull(u) || store <= 0) {
             return 1;
         }
 
@@ -147,7 +148,7 @@ public class OrderServiceImpl implements OrderService {
                                 streamReadOptions,
                                 streamOffset);
 
-                        if (list == null || list.size() == 0) {
+                        if (Objects.isNull(list) || list.isEmpty()) {
                             if (type == 0) {
                                 break;
                             }

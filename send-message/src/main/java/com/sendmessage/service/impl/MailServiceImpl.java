@@ -2,6 +2,7 @@ package com.sendmessage.service.impl;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
@@ -100,7 +101,7 @@ public class MailServiceImpl implements MailService {
 
             mail.setText(html);
 
-            if (mail.getExpireKey() == null) {
+            if (Objects.isNull(mail.getExpireKey())) {
                 mail.setExpireKey(mailConfig.getExpireKey());
             }
 
@@ -108,7 +109,7 @@ public class MailServiceImpl implements MailService {
                 mail.setExpire(mailConfig.getExpire());
             }
 
-            if (mail.getTemplate() == null) {
+            if (Objects.isNull(mail.getTemplate())) {
                 mail.setTemplate(mail.getTemplate());
             }
         }

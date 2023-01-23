@@ -2,6 +2,7 @@ package com.socket.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -40,7 +41,7 @@ public class SseController {
     public R<Object> disconnect(@PathVariable String userId) {
         SseEmitter v = SseUtil.removeUser(userId);
 
-        return v == null ? R.ERROR() : R.SUCCESS();
+        return Objects.isNull(v) ? R.ERROR() : R.SUCCESS();
     }
 
     @PostMapping("send/batch")

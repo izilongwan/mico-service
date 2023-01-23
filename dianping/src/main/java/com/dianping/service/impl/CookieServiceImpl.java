@@ -1,5 +1,6 @@
 package com.dianping.service.impl;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
@@ -50,7 +51,7 @@ public class CookieServiceImpl implements CookieService {
     public String cookieRm(HttpServletRequest request, HttpServletResponse response, String username) {
         String key = cookiePrefix + username;
 
-        if (redisTemplate.opsForHash().get(key, "name") == null) {
+        if (Objects.isNull(redisTemplate.opsForHash().get(key, "name"))) {
             return "0";
         }
 

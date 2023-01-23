@@ -61,7 +61,7 @@ public class RequestLimitAop {
 
         Object object = boundHashOps.get(countKey);
 
-        if (Objects.equals(object, null)) {
+        if (Objects.isNull(object)) {
             boundHashOps.put(ipKey, remoteAddr);
             boundHashOps.put(countKey, 1);
             boundHashOps.put(timestampKey, System.currentTimeMillis());
@@ -69,7 +69,7 @@ public class RequestLimitAop {
         } else {
             Long count = boundHashOps.increment(countKey, 1);
 
-            if (count == null) {
+            if (Objects.isNull(count)) {
                 count = 0L;
             }
 

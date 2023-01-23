@@ -1,6 +1,7 @@
 package com.common.aop;
 
 import java.lang.annotation.Annotation;
+import java.util.Objects;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -79,7 +80,7 @@ public class ValidatorAop {
     }
 
     private String checkValid(ValidatorAnno validatorAnno, String name, Object val) {
-        if (val == null) {
+        if (Objects.isNull(val)) {
             return String.format("属性[%s]的值为空", name);
         }
 

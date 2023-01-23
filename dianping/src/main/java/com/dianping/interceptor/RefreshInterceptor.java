@@ -27,7 +27,7 @@ public class RefreshInterceptor implements HandlerInterceptor {
 
     // add Interceptor 使用new的方式 需要使用构造函数注入redisTemplate
     public RefreshInterceptor(RedisTemplate<String, Object> redisTemplate) {
-        if (this.redisTemplate == null) {
+        if (Objects.isNull(this.redisTemplate)) {
             this.redisTemplate = redisTemplate;
         }
     }
@@ -41,12 +41,12 @@ public class RefreshInterceptor implements HandlerInterceptor {
 
         Cookie[] cookies = request.getCookies();
 
-        if (redisTemplate == null) {
+        if (Objects.isNull(redisTemplate)) {
             log.error("redisTemplate = {}", redisTemplate);
             return true;
         }
 
-        if (cookies == null) {
+        if (Objects.isNull(cookies)) {
             return true;
         }
 
@@ -55,7 +55,7 @@ public class RefreshInterceptor implements HandlerInterceptor {
                 String key = "test:user:h" + cookie.getValue();
                 Map<Object, Object> entries = redisTemplate.opsForHash().entries(key);
 
-                if (!Objects.equals(entries, null)) {
+                if (!Objects.isNull(entries)) {
                     redisTemplate.expire(key, 1, TimeUnit.DAYS);
                     User u = BeanUtil.toBean(entries, User.class);
                     ThreadLocalPool.setUser(u);

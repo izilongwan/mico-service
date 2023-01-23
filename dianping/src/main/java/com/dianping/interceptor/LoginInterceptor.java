@@ -2,6 +2,8 @@ package com.dianping.interceptor;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Objects;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -31,7 +33,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         User u = ThreadLocalPool.getUser();
 
-        if (u == null) {
+        if (Objects.isNull(u)) {
             setErrorResponse(response);
             return false;
         }
