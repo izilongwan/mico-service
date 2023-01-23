@@ -3,6 +3,10 @@ package com.common.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -23,10 +27,6 @@ public class R<T> implements Serializable {
 
     final public static <T> R<T> SUCCESS(T data) {
         return new R<T>(data);
-    }
-
-    final public static <T> R<T> SUCCESS(T data, long timecost) {
-        return new R<T>(data, timecost);
     }
 
     final public static <T> R<T> SUCCESS(T data, String message) {
@@ -74,25 +74,34 @@ public class R<T> implements Serializable {
     long timestamp = System.currentTimeMillis();
 
     public R() {
+        initPath();
     }
 
     public R(T data) {
+        this();
         this.data = data;
     }
 
-    public R(T data, long timecost) {
-        this.data = data;
-        this.timecost = timecost;
+    public R(T data, String message) {
+        this(data);
+        this.message = message;
     }
 
     public R(T data, Integer code, String message) {
+        this(data, message);
         this.code = code;
-        this.message = message;
     }
 
     public R(T data, Integer code, String message, long timecost) {
-        this.code = code;
-        this.message = message;
+        this(data, code, message);
         this.timecost = timecost;
+    }
+
+    private void initPath() {
+        RequestAttributes attrs = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes reqAttrs = (ServletRequestAttributes) attrs;
+        String path = reqAttrs.getRequest().getRequestURI();
+
+        this.path = path;
     }
 }

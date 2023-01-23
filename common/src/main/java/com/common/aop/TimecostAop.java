@@ -36,10 +36,7 @@ public class TimecostAop {
         if (data instanceof R) {
             R<Object> rs = (R<Object>) data;
             rs.setTimecost(System.currentTimeMillis() - ts);
-            ServletRequestAttributes reqAttrs = (ServletRequestAttributes) attrs;
-            String path = reqAttrs.getRequest().getRequestURI();
 
-            rs.setPath(path);
             return rs;
         }
 
