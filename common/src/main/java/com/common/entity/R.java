@@ -99,6 +99,10 @@ public class R<T> implements Serializable {
 
     private void initPath() {
         RequestAttributes attrs = RequestContextHolder.getRequestAttributes();
+        if (Objects.isNull(attrs)) {
+            return;
+        }
+
         ServletRequestAttributes reqAttrs = (ServletRequestAttributes) attrs;
         String path = reqAttrs.getRequest().getRequestURI();
 
