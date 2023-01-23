@@ -13,8 +13,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import com.common.util.ThreadLocalUtil;
 import com.dianping.entity.User;
-import com.dianping.util.ThreadLocalPool;
 
 import cn.hutool.core.bean.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -58,7 +58,7 @@ public class RefreshInterceptor implements HandlerInterceptor {
                 if (!Objects.isNull(entries)) {
                     redisTemplate.expire(key, 1, TimeUnit.DAYS);
                     User u = BeanUtil.toBean(entries, User.class);
-                    ThreadLocalPool.setUser(u);
+                    ThreadLocalUtil.set("user", u, User.class);
                 }
                 return true;
             }
@@ -70,6 +70,6 @@ public class RefreshInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
             throws Exception {
-        ThreadLocalPool.clear();
+        ThreadLocalUtil.remove("user");
     }
 }

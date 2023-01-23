@@ -14,8 +14,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.alibaba.fastjson.JSON;
 import com.common.entity.R;
+import com.common.util.ThreadLocalUtil;
 import com.dianping.entity.User;
-import com.dianping.util.ThreadLocalPool;
 
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
@@ -31,7 +31,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
 
-        User u = ThreadLocalPool.getUser();
+        User u = ThreadLocalUtil.get("user", User.class);
 
         if (Objects.isNull(u)) {
             setErrorResponse(response);
