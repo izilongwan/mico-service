@@ -22,9 +22,9 @@ public class ValidatorAop {
     }
 
     @Around("range() || anno()")
-    private Object aroundCheckParameter(ProceedingJoinPoint proceedingJoinPoint)
+    private Object aroundCheckMethodParam(ProceedingJoinPoint proceedingJoinPoint)
             throws Throwable {
-        Object rs = AopCheckUtil.checkMethodParam(
+        AopCheckUtil.checkMethodParam(
                 proceedingJoinPoint,
                 paramBo -> {
                     Annotation annotation = paramBo.getAnnotation();
@@ -33,19 +33,12 @@ public class ValidatorAop {
                     if (annotationPresent) {
                         ValidatorAnno validatorAnno = ((ValidatorAnno) annotation);
 
-                        String msg = checkValid(validatorAnno, paramBo.getName(), paramBo.getValue());
-
-                        if (msg != null) {
-                            return R.ERROR(msg);
-                        }
+                        String checkValid = checkValid(validatorAnno, paramBo.getName(), paramBo.getValue());
+                        AopCheckUtil.throwException(checkValid);
                     }
 
                     return null;
                 });
-
-        if (rs != null) {
-            return rs;
-        }
 
         return proceedingJoinPoint.proceed();
     }
@@ -56,27 +49,26 @@ public class ValidatorAop {
     }
 
     @Around("range() || anno()")
-    private Object aroundCheckField(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        Object rs = AopCheckUtil.checkField(
-                proceedingJoinPoint,
-                paramBo -> {
-                    Annotation annotation = paramBo.getAnnotation();
-                    if (annotation instanceof ValidatorAnno) {
-                        String msg = checkValid((ValidatorAnno) annotation, paramBo.getName(), paramBo.getValue());
-
-                        if (msg != null) {
-                            return R.ERROR(msg);
+    private Object aroundCheckField(ProceedingJoinPoint proceedingJoinPoint) {
+        try {
+            AopCheckUtil.checkField(
+                    proceedingJoinPoint,
+                    paramBo -> {
+                        Annotation annotation = paramBo.getAnnotation();
+                        if (annotation instanceof ValidatorAnno) {
+                            String checkValid = checkValid((ValidatorAnno) annotation, paramBo.getName(),
+                                    paramBo.getValue());
+                            AopCheckUtil.throwException(checkValid);
                         }
-                    }
 
-                    return null;
-                });
+                        return null;
+                    });
+            return proceedingJoinPoint.proceed();
 
-        if (rs != null) {
-            return rs;
+        } catch (Throwable e) {
+            return R.ERROR(e.getMessage());
         }
 
-        return proceedingJoinPoint.proceed();
     }
 
     private String checkValid(ValidatorAnno validatorAnno, String name, Object val) {

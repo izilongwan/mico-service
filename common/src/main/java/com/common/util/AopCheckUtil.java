@@ -11,7 +11,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 
 import com.common.bo.ParamBo;
-import com.common.entity.R;
 
 public class AopCheckUtil {
     // 获取方法参数注解
@@ -39,11 +38,7 @@ public class AopCheckUtil {
             for (Annotation parameterAnno : parameterAnnotation) {
                 ParamBo methodParamBo = new ParamBo(paramName, paramValue, parameterAnno, i,
                         i == length - 1);
-                Object rs = cb.apply(methodParamBo);
-
-                if (rs instanceof R) {
-                    return rs;
-                }
+                cb.apply(methodParamBo);
             }
 
             i++;
@@ -52,10 +47,10 @@ public class AopCheckUtil {
         return null;
     }
 
-    // 获取类属性注解
+    // 获取类属性注解, 需使用try catch返回R.Error()
     public static Object checkField(
             ProceedingJoinPoint proceedingJoinPoint,
-            Function<ParamBo, Object> cb) {
+            Function<ParamBo, Object> cb) throws Exception {
         MethodSignature methodSignature = ((MethodSignature) proceedingJoinPoint.getSignature());
         Parameter[] parameters = methodSignature.getMethod().getParameters();
         // 获取方法参数值
@@ -77,23 +72,12 @@ public class AopCheckUtil {
                 field.setAccessible(true);
                 // boolean annotationPresent = field.isAnnotationPresent(ValidatorAnno.class);
                 Annotation[] annos = field.getAnnotations();
+                String name = field.getName();
+                Object value = field.get(arg);
 
-                try {
-                    String name = field.getName();
-                    Object value = field.get(arg);
-
-                    for (Annotation anno : annos) {
-                        ParamBo paramBo = new ParamBo(name, value, anno, i, i == length - 1, field);
-                        Object rs = cb.apply(paramBo);
-
-                        if (rs != null) {
-                            return rs;
-                        }
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-
+                for (Annotation anno : annos) {
+                    ParamBo paramBo = new ParamBo(name, value, anno, i, i == length - 1, field);
+                    cb.apply(paramBo);
                 }
 
             }
@@ -101,6 +85,12 @@ public class AopCheckUtil {
         }
 
         return null;
+    }
+
+    public static void throwException(Object message) {
+        if (message instanceof String) {
+            throw new RuntimeException(((String) message), new Throwable("AOP"));
+        }
     }
 
 }

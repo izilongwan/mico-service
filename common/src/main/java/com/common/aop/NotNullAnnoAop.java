@@ -25,24 +25,25 @@ public class NotNullAnnoAop {
     }
 
     @Around("anno() || controller()")
-    public Object aroundParam(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        Object rs = AopCheckUtil.checkField(
-                proceedingJoinPoint,
-                paramBo -> {
-                    if (paramBo.getAnnotation() instanceof NotNullAnno
-                            && Objects.equal(paramBo.getValue(), null)) {
-                        return R.ERROR(
-                                String.format("属性[%s]的值为空", paramBo.getName()));
-                    }
+    public Object aroundCheckField(ProceedingJoinPoint proceedingJoinPoint) {
+        try {
+            AopCheckUtil.checkField(
+                    proceedingJoinPoint,
+                    paramBo -> {
+                        if (paramBo.getAnnotation() instanceof NotNullAnno &&
+                                Objects.equal(paramBo.getValue(), null)) {
+                            String checkValid = String.format("属性[%s]的值为空", paramBo.getName());
+                            AopCheckUtil.throwException(checkValid);
+                        }
 
-                    return null;
-                });
+                        return null;
+                    });
+            return proceedingJoinPoint.proceed();
 
-        if (rs != null) {
-            return rs;
+        } catch (Throwable e) {
+            return R.ERROR(e.getMessage());
         }
 
-        return proceedingJoinPoint.proceed();
     }
 
 }
