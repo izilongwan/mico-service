@@ -22,9 +22,14 @@ import com.test.entity.Dept;
 import com.test.mapper.DeptDtoMapper;
 import com.test.mapper.DeptMapper;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 @RestController
 @RequestMapping("test/dept")
 @RequestLimitAnno
+@Api(value = "test/dept", description = "controller for test/dept")
 public class DeptController {
     @Resource
     RestTemplate restTemplate;
@@ -41,6 +46,7 @@ public class DeptController {
 
     @ValidatorAnno
     @GetMapping("")
+    @ApiOperation(value = "", notes = "获取全部dept")
     public R<List<DeptDto>> getDept() {
         return R.SUCCESS(deptDtoMapper.select());
     }
@@ -52,9 +58,10 @@ public class DeptController {
     }
 
     @GetMapping("list/{current}/{pageSize}")
+    @ApiOperation(value = "", notes = "获取分页dept")
     public R<Page<Dept>> getDeptListPage(
-            @ValidatorAnno(value = "[1-9]\\d?") @PathVariable Integer current,
-            @ValidatorAnno(pattern = "[1-9]\\d?") @PathVariable Integer pageSize) {
+            @ApiParam(value = "当前分页", required = true) @ValidatorAnno(value = "[1-9]\\d?") @PathVariable Integer current,
+            @ApiParam(value = "分页数量", required = true) @ValidatorAnno(pattern = "[1-9]\\d?") @PathVariable Integer pageSize) {
         Page<Dept> page = new Page<>(current, pageSize);
 
         return R.SUCCESS(deptMapper.selectPage(page, null));

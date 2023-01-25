@@ -10,7 +10,7 @@ import com.dianping.interceptor.LoginInterceptor;
 import com.dianping.interceptor.RefreshInterceptor;
 
 @Configuration
-public class WebMvccConfig extends WebMvcConfigurationSupport {
+public class WebMvcConfig extends WebMvcConfigurationSupport {
     @Resource
     RefreshInterceptor refreshInterceptor;
 

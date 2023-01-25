@@ -1,0 +1,2 @@
+swagger-config:
+  base-package: com.test.controller
