@@ -112,7 +112,8 @@ public class ValidatorAop {
     private <T> String checkPropAnno(ValidatorPropAnno[] propAnnos, Class<T> clazz, T val, String name) {
         for (ValidatorPropAnno propAnno : propAnnos) {
             try {
-                Method method = clazz.getMethod(getMethodName(propAnno.prop()));
+                Method method = clazz.getDeclaredMethod(getMethodName(propAnno.prop()));
+                method.setAccessible(true);
                 Object invoke = method.invoke(val);
                 String value = String.valueOf(invoke);
 
