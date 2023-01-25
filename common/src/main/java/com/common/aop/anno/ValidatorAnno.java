@@ -19,4 +19,6 @@ public @interface ValidatorAnno {
     String pattern() default "";
 
     String message() default "";
+
+    ValidatorPropAnno[] values() default {};
 }

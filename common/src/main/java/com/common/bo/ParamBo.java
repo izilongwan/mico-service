@@ -12,15 +12,15 @@ import lombok.experimental.Accessors;
 @Data
 @ToString
 @Accessors(chain = true)
-public class ParamBo {
+public class ParamBo<T extends Object> {
     String name;
-    Object value;
+    T value;
     Annotation annotation;
     int index;
     boolean isLastIndex;
     Field field;
 
-    public ParamBo(String name, Object value, Annotation annotation, int index, boolean isLastIndex) {
+    public ParamBo(String name, T value, Annotation annotation, int index, boolean isLastIndex) {
         this.name = name;
         this.value = value;
         this.annotation = annotation;

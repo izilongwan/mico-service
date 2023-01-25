@@ -17,6 +17,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.common.aop.anno.LogAnno;
 import com.common.aop.anno.RequestLimitAnno;
 import com.common.aop.anno.ValidatorAnno;
+import com.common.aop.anno.ValidatorPropAnno;
 import com.common.entity.R;
 import com.test.dto.DeptDto;
 import com.test.entity.Dept;
@@ -76,7 +77,11 @@ public class DeptController {
     @LogAnno
     @LogAnno("oOo")
     @PostMapping("")
-    public R<Dept> getDeptById2(@RequestBody Dept dept) {
+    public R<Dept> getDeptById2(
+            @RequestBody @ValidatorAnno(values = {
+                    @ValidatorPropAnno(prop = "id", value = "1?[1-9]"),
+                    @ValidatorPropAnno(prop = "name", value = "^w\\d$"),
+            }) Dept dept) {
         return R.SUCCESS(deptMapper.selectById(dept.getId()));
     }
 }
