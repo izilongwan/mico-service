@@ -7,9 +7,10 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
+import org.springframework.util.StringUtils;
+
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
@@ -67,7 +68,7 @@ public class AutoGeneratorUtil {
 		System.out.println(help.toString());
 		if (scanner.hasNext()) {
 			String ipt = scanner.next();
-			if (StringUtils.isNotBlank(ipt)) {
+			if (StringUtils.hasLength(tip)) {
 				return ipt;
 			}
 		}
