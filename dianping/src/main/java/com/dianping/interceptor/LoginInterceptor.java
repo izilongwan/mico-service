@@ -7,8 +7,8 @@ import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.http.entity.ContentType;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -43,7 +43,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     void setErrorResponse(HttpServletResponse response) throws IOException {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        response.setContentType(ContentType.APPLICATION_JSON.toString());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         PrintWriter writer = response.getWriter();
         R<Object> error = R.ERROR("未登录");
