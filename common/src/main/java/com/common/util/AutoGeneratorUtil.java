@@ -7,10 +7,9 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
-import org.springframework.util.StringUtils;
-
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
@@ -66,9 +65,10 @@ public class AutoGeneratorUtil {
 		StringBuilder help = new StringBuilder();
 		help.append("请输入" + tip + "：");
 		System.out.println(help.toString());
+
 		if (scanner.hasNext()) {
 			String ipt = scanner.next();
-			if (StringUtils.hasLength(tip)) {
+			if (StringUtils.isNotBlank(tip)) {
 				return ipt;
 			}
 		}
@@ -130,7 +130,7 @@ public class AutoGeneratorUtil {
 
 		// 包配置
 		PackageConfig pc = new PackageConfig();
-		pc.setModuleName(scannerModule);
+		pc.setModuleName(isRootModule ? null : scannerModule);
 		pc.setParent("com");
 		mpg.setPackageInfo(pc);
 
