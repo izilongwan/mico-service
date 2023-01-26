@@ -59,6 +59,11 @@ public class DeptController {
         return R.SUCCESS(deptMapper.selectList(null));
     }
 
+    @PostMapping("demo")
+    public R<Dept> getDemo(@RequestBody Dept dept) {
+        return R.SUCCESS(dept);
+    }
+
     @GetMapping("list/{current}/{pageSize}")
     @ApiOperation(value = "", notes = "获取分页dept")
     public R<Page<Dept>> getDeptListPage(

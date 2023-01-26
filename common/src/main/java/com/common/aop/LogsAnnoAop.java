@@ -2,6 +2,7 @@ package com.common.aop;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -17,18 +18,23 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @Slf4j
 public class LogsAnnoAop {
-    @Pointcut("@annotation(com.common.aop.anno.LogsAnno)")
-    public void anno() {
+    @Pointcut("@annotation(logsAnno)")
+    public void anno(LogsAnno logsAnno) {
 
     }
 
-    @Before("anno()")
-    public void before(JoinPoint joinPoint) {
-        log.debug("before {}", joinPoint);
+    @Before("anno(logsAnno)")
+    public void before(JoinPoint joinPoint, LogsAnno logsAnno) {
+        log.debug("before {} {}", joinPoint, logsAnno);
     }
 
-    @Around("anno()")
-    public Object around(ProceedingJoinPoint proceedingJoinPoint) {
+    @After("anno(logsAnno)")
+    public void after(JoinPoint joinPoint, LogsAnno logsAnno) {
+        log.debug("after {}", joinPoint);
+    }
+
+    @Around("anno(logsAnno)")
+    public Object around(ProceedingJoinPoint proceedingJoinPoint, LogsAnno logsAnno) {
         log.debug("around {}", proceedingJoinPoint);
 
         try {

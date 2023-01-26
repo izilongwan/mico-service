@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 import org.springframework.core.annotation.AliasFor;
 
 @Documented
-@Target({ ElementType.PARAMETER, ElementType.FIELD, ElementType.METHOD })
+@Target({ ElementType.PARAMETER, ElementType.FIELD, ElementType.METHOD, ElementType.LOCAL_VARIABLE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidatorAnno {
     @AliasFor("pattern")
