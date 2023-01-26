@@ -14,9 +14,9 @@ import com.common.bo.ParamBo;
 
 public class AopCheckUtil {
     // 获取方法参数注解
-    public static Object checkMethodParam(
+    public static <T> Object checkMethodParam(
             ProceedingJoinPoint proceedingJoinPoint,
-            Function<ParamBo, Object> cb) {
+            Function<ParamBo<T>, Object> cb) {
         MethodSignature methodSignature = ((MethodSignature) proceedingJoinPoint.getSignature());
         // 获取方法
         Method method = methodSignature.getMethod();
@@ -33,10 +33,10 @@ public class AopCheckUtil {
             // 获取方法参数名
             String paramName = parameterNames[i];
             // 获取方法参数值
-            Object paramValue = args[i];
+            T paramValue = (T) args[i];
 
             for (Annotation parameterAnno : parameterAnnotation) {
-                ParamBo methodParamBo = new ParamBo(paramName, paramValue, parameterAnno, i,
+                ParamBo<T> methodParamBo = new ParamBo<>(paramName, paramValue, parameterAnno, i,
                         i == length - 1);
                 cb.apply(methodParamBo);
             }
@@ -48,9 +48,9 @@ public class AopCheckUtil {
     }
 
     // 获取类属性注解, 需使用try catch返回R.Error()
-    public static Object checkField(
+    public static <T> Object checkField(
             ProceedingJoinPoint proceedingJoinPoint,
-            Function<ParamBo, Object> cb) throws Exception {
+            Function<ParamBo<T>, Object> cb) throws Exception {
         MethodSignature methodSignature = ((MethodSignature) proceedingJoinPoint.getSignature());
         Parameter[] parameters = methodSignature.getMethod().getParameters();
         // 获取方法参数值
@@ -73,10 +73,10 @@ public class AopCheckUtil {
                 // boolean annotationPresent = field.isAnnotationPresent(ValidatorAnno.class);
                 Annotation[] annos = field.getAnnotations();
                 String name = field.getName();
-                Object value = field.get(arg);
+                T value = (T) field.get(arg);
 
                 for (Annotation anno : annos) {
-                    ParamBo paramBo = new ParamBo(name, value, anno, i, i == length - 1, field);
+                    ParamBo<T> paramBo = new ParamBo<>(name, value, anno, i, i == length - 1, field);
                     cb.apply(paramBo);
                 }
 

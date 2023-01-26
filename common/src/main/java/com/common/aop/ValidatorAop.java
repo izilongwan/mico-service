@@ -1,6 +1,7 @@
 package com.common.aop;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Locale;
 import java.util.Objects;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.common.aop.anno.ValidatorAnno;
 import com.common.aop.anno.ValidatorPropAnno;
+import com.common.bo.ParamBo;
 import com.common.entity.R;
 import com.common.util.AopCheckUtil;
 
@@ -36,7 +38,7 @@ public class ValidatorAop {
                     if (annotationPresent) {
                         ValidatorAnno validatorAnno = ((ValidatorAnno) annotation);
 
-                        String checkValid = checkValid(validatorAnno, paramBo.getName(), paramBo.getValue());
+                        String checkValid = checkValid(validatorAnno, paramBo);
                         AopCheckUtil.throwException(checkValid);
                     }
 
@@ -59,8 +61,7 @@ public class ValidatorAop {
                     paramBo -> {
                         Annotation annotation = paramBo.getAnnotation();
                         if (annotation instanceof ValidatorAnno) {
-                            String checkValid = checkValid((ValidatorAnno) annotation, paramBo.getName(),
-                                    paramBo.getValue());
+                            String checkValid = checkValid((ValidatorAnno) annotation, paramBo);
                             AopCheckUtil.throwException(checkValid);
                         }
 
@@ -74,53 +75,65 @@ public class ValidatorAop {
 
     }
 
-    private <T> String checkValid(ValidatorAnno validatorAnno, String name, T val) {
+    private <T> String checkValid(ValidatorAnno validatorAnno, ParamBo<T> paramBo) {
+        T val = paramBo.getValue();
+        String name = paramBo.getName();
+
         if (Objects.isNull(val)) {
             return String.format("属性[%s]的值为空", name);
         }
 
-        String pattern = validatorAnno.value();
+        Class<T> clazz = (Class<T>) val.getClass();
         ValidatorPropAnno[] propAnnos = validatorAnno.values();
+
+        if (propAnnos.length > 0) {
+            String checkPropAnno = checkPropAnno(propAnnos, clazz, val);
+            return Objects.isNull(checkPropAnno) ? null : checkPropAnno;
+        }
+
+        String pattern = validatorAnno.value();
 
         if (pattern.isEmpty()) {
             pattern = validatorAnno.pattern();
         }
 
-        if (pattern.isEmpty() && propAnnos.length <= 0) {
+        if (pattern.isEmpty()) {
             return null;
-        }
-
-        Class<T> clazz = (Class<T>) val.getClass();
-
-        if (propAnnos.length > 0) {
-            String checkPropAnno = checkPropAnno(propAnnos, clazz, val, name);
-            return Objects.isNull(checkPropAnno) ? null : checkPropAnno;
         }
 
         String value = String.valueOf(val);
 
         if (!value.matches(pattern)) {
             String message = validatorAnno.message();
+            String simpleName = "";
+
+            Field field = paramBo.getField();
+
+            if (Objects.nonNull(field)) {
+                simpleName = field.getDeclaringClass().getSimpleName() + ".";
+            }
+
             return message.isEmpty()
-                    ? String.format("属性[%s]的值不匹配", name)
+                    ? String.format("属性[%s%s]的值不匹配", simpleName, name)
                     : message;
         }
 
         return null;
     }
 
-    private <T> String checkPropAnno(ValidatorPropAnno[] propAnnos, Class<T> clazz, T val, String name) {
+    private <T> String checkPropAnno(ValidatorPropAnno[] propAnnos, Class<T> clazz, T val) {
         for (ValidatorPropAnno propAnno : propAnnos) {
             try {
                 Method method = clazz.getDeclaredMethod(getMethodName(propAnno.prop()));
                 method.setAccessible(true);
                 Object invoke = method.invoke(val);
                 String value = String.valueOf(invoke);
+                String simpleName = method.getDeclaringClass().getSimpleName();
 
                 if (!value.matches(propAnno.value())) {
                     String message = propAnno.message();
                     return message.isEmpty()
-                            ? String.format("属性[%s.%s]的值不匹配", name, propAnno.prop())
+                            ? String.format("属性[%s.%s]的值不匹配", simpleName, propAnno.prop())
                             : message;
                 }
             } catch (Exception e) {
