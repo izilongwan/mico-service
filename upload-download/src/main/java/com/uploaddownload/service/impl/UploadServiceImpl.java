@@ -60,6 +60,7 @@ public class UploadServiceImpl implements UploadService {
 
         try {
             Path createDirectories = Files.createDirectories(path);
+            log.debug("{}", createDirectories);
         } catch (Exception e) {
             log.error("{}", e);
         }

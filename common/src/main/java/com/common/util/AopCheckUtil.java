@@ -36,8 +36,8 @@ public class AopCheckUtil {
             T paramValue = (T) args[i];
 
             for (Annotation parameterAnno : parameterAnnotation) {
-                ParamBo<T> methodParamBo = new ParamBo<>(paramName, paramValue, parameterAnno, i,
-                        i == length - 1);
+                ParamBo<T> methodParamBo = new ParamBo<>(paramName, paramValue, parameterAnno);
+                methodParamBo.setIndex(i).setLastIndex(i == length - 1);
                 cb.apply(methodParamBo);
             }
 
@@ -76,7 +76,8 @@ public class AopCheckUtil {
                 T value = (T) field.get(arg);
 
                 for (Annotation anno : annos) {
-                    ParamBo<T> paramBo = new ParamBo<>(name, value, anno, i, i == length - 1, field);
+                    ParamBo<T> paramBo = new ParamBo<>(name, value, anno, field);
+                    paramBo.setIndex(i).setLastIndex(i == length - 1);
                     cb.apply(paramBo);
                 }
 
