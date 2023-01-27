@@ -29,21 +29,25 @@ public class ValidatorAop {
     @Around("range() || anno()")
     private Object aroundCheckMethodParam(ProceedingJoinPoint proceedingJoinPoint)
             throws Throwable {
-        AopCheckUtil.checkMethodParam(
-                proceedingJoinPoint,
-                paramBo -> {
-                    Annotation annotation = paramBo.getAnnotation();
-                    boolean annotationPresent = annotation instanceof ValidatorAnno;
+        try {
+            AopCheckUtil.checkMethodParam(
+                    proceedingJoinPoint,
+                    paramBo -> {
+                        Annotation annotation = paramBo.getAnnotation();
+                        boolean annotationPresent = annotation instanceof ValidatorAnno;
 
-                    if (annotationPresent) {
-                        ValidatorAnno validatorAnno = ((ValidatorAnno) annotation);
+                        if (annotationPresent) {
+                            ValidatorAnno validatorAnno = ((ValidatorAnno) annotation);
 
-                        String checkValid = checkValid(validatorAnno, paramBo);
-                        AopCheckUtil.throwException(checkValid);
-                    }
+                            String checkValid = checkValid(validatorAnno, paramBo);
+                            AopCheckUtil.throwException(checkValid);
+                        }
 
-                    return null;
-                });
+                        return null;
+                    });
+        } catch (Exception e) {
+            return R.ERROR(e.getMessage());
+        }
 
         return proceedingJoinPoint.proceed();
     }
