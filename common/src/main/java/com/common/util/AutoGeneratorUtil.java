@@ -184,7 +184,7 @@ public class AutoGeneratorUtil {
 				list.add(name);
 			}
 
-			log.debug("扫描[{}]数据库下共有[{}]张表: {}", empty ? "" : scannerDatabase, list.size(),
+			log.debug("[扫描] [{}]数据库下共有[{}]张表: {}", empty ? "" : scannerDatabase, list.size(),
 					list);
 		} catch (Exception e) {
 			e.printStackTrace();
