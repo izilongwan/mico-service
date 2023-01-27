@@ -18,6 +18,7 @@ import com.baomidou.mybatisplus.generator.config.TemplateConfig;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import com.common.entity.AutoGeneratorEntity;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -60,7 +61,7 @@ public class AutoGeneratorUtil {
 	private static String scanner(String tip) {
 		Scanner scanner = new Scanner(System.in);
 		StringBuilder help = new StringBuilder();
-		help.append("请输入" + tip + "：");
+		help.append(tip + ": ");
 		System.out.println(help.toString());
 
 		return scanner.nextLine();
@@ -71,32 +72,59 @@ public class AutoGeneratorUtil {
 	 */
 	public static void main(String[] args) {
 		init();
-		// init("test");
-		// genCode("test", "", "test", "test");
+	}
+
+	public static void init(AutoGeneratorEntity autoGeneratorEntity) {
+		genCode(autoGeneratorEntity);
 	}
 
 	public static void init() {
-		String scannerDatabase = scanner("数据库名");
+		String url = scanner("[1] 请输入数据库地址 (127.0.0.1:3306)");
+		String username = scanner("[2] 请输入数据库用户名");
+		String password = scanner("[3] 请输入数据库地址");
+		String database = scanner("[4] 请输入数据库名 (必须有)");
+		String tableName = scanner("[5] 请输入表名 (多个表名使用逗号分隔)");
+		String moduleName = scanner("[6] 请输入模块名");
+		String packageName = scanner(
+				String.format("[7] 请输入包名%s", moduleName.isEmpty() ? "" : String.format(" (%s)", moduleName)));
+		String author = scanner(String.format("[8] 请输入作者 (izilong)"));
 
-		init(scannerDatabase);
-	}
+		AutoGeneratorEntity autoGeneratorEntity = new AutoGeneratorEntity();
 
-	public static void init(String database) {
-		String scannerTable = scanner("表名 (多个表名使用逗号分隔)");
-		String scannerModule = scanner("模块名");
-		String scannerPackage = scanner(String.format("包名（%s）", scannerModule));
-
-		if (scannerPackage.isEmpty()) {
-			scannerPackage = scannerModule;
+		if (packageName.isEmpty()) {
+			packageName = moduleName;
 		}
 
-		genCode(database, scannerTable, scannerModule, scannerPackage);
+		if (!url.isEmpty()) {
+			autoGeneratorEntity.setUrl(url);
+		}
+
+		if (!username.isEmpty()) {
+			autoGeneratorEntity.setUsername(username);
+		}
+
+		if (!password.isEmpty()) {
+			autoGeneratorEntity.setPassword(password);
+		}
+
+		if (!author.isEmpty()) {
+			autoGeneratorEntity.setAuthor(author);
+		}
+
+		autoGeneratorEntity.setDatabse(database)
+				.setPackageName(packageName)
+				.setTableName(tableName)
+				.setModuleName(moduleName);
+
+		genCode(autoGeneratorEntity);
 	}
 
-	public static void genCode(String scannerDatabase, String scannerTable, String scannerModule,
-			String scannerPackage) {
-		boolean isRootModule = scannerModule.isEmpty();
-		String modulePath = isRootModule ? "" : "/" + scannerModule;
+	public static void genCode(AutoGeneratorEntity autoGeneratorEntity) {
+		String moduleName = autoGeneratorEntity.getModuleName();
+		String database = autoGeneratorEntity.getDatabse();
+		String packageName = autoGeneratorEntity.getPackageName();
+		boolean isRootModule = moduleName.isEmpty();
+		String modulePath = isRootModule ? "" : "/" + moduleName;
 
 		// 代码生成器
 		AutoGenerator mpg = new AutoGenerator();
@@ -106,27 +134,28 @@ public class AutoGeneratorUtil {
 		String projectPath = System.getProperty("user.dir");
 		String outputDir = String.format("%s%s/src/main/java", projectPath, modulePath);
 		gc.setOutputDir(outputDir);
-		gc.setAuthor("izilong");
+		gc.setAuthor(autoGeneratorEntity.getAuthor());
 		gc.setOpen(false);
 		mpg.setGlobalConfig(gc);
 
 		// 数据源配置
 		DataSourceConfig dsc = new DataSourceConfig();
-		boolean isRootDataBase = scannerDatabase.isEmpty();
+		boolean isRootDataBase = database.isEmpty();
 		String url = String.format(
-				"jdbc:mysql://127.0.0.1:3306%s?useUnicode=true&useSSL=false&characterEncoding=utf8",
-				isRootDataBase ? "" : "/" + scannerDatabase);
+				"jdbc:mysql://%s%s?useUnicode=true&useSSL=false&characterEncoding=utf8",
+				autoGeneratorEntity.getUrl(),
+				isRootDataBase ? "" : "/" + database);
 		dsc.setUrl(url);
 		// dsc.setSchemaName("public");
-		dsc.setDriverName("com.mysql.cj.jdbc.Driver");
-		dsc.setUsername("root");
-		dsc.setPassword("root");
+		dsc.setDriverName(autoGeneratorEntity.getDriverName());
+		dsc.setUsername(autoGeneratorEntity.getUsername());
+		dsc.setPassword(autoGeneratorEntity.getPassword());
 		mpg.setDataSource(dsc);
 
 		// 包配置
 		PackageConfig pc = new PackageConfig();
-		pc.setModuleName(isRootModule ? null : scannerPackage);
-		pc.setParent("com");
+		pc.setModuleName(isRootModule ? null : packageName);
+		pc.setParent(autoGeneratorEntity.getParentName());
 		mpg.setPackageInfo(pc);
 
 		// 自定义配置
@@ -137,7 +166,7 @@ public class AutoGeneratorUtil {
 			}
 		};
 		List<FileOutConfig> focList = new ArrayList<>();
-		String[] tableNames = getTableName(scannerDatabase, scannerTable, dsc);
+		String[] tableNames = getTableName(database, autoGeneratorEntity.getTableName(), dsc);
 
 		Stream.of(tableNames).forEach(
 				(o) -> focList.add(new FileOutConfigExtension("/templates/mapper.xml.ftl", projectPath, modulePath)));
@@ -167,16 +196,16 @@ public class AutoGeneratorUtil {
 		log.debug(String.format("[END] 文件生成完成, 共耗时[%s]ms !", System.currentTimeMillis() - start));
 	}
 
-	private static String[] getTableName(String scannerDatabase, String scannerTable, DataSourceConfig dsc) {
+	private static String[] getTableName(String database, String scannerTable, DataSourceConfig dsc) {
 		if (!scannerTable.isEmpty()) {
 			return scannerTable.split(",");
 		}
 
 		ArrayList<String> list = new ArrayList<>();
-		boolean empty = scannerDatabase.isEmpty();
+		boolean empty = database.isEmpty();
 
 		try {
-			ResultSet catalogs = dsc.getConn().getMetaData().getTables(empty ? null : scannerDatabase, null, null,
+			ResultSet catalogs = dsc.getConn().getMetaData().getTables(empty ? null : database, null, null,
 					new String[] { "TABLE" });
 
 			while (catalogs.next()) {
@@ -184,7 +213,7 @@ public class AutoGeneratorUtil {
 				list.add(name);
 			}
 
-			log.debug("[扫描] [{}]数据库下共有[{}]张表: {}", empty ? "" : scannerDatabase, list.size(),
+			log.debug("[扫描] [{}]数据库下共有[{}]张表: {}", empty ? "" : database, list.size(),
 					list);
 		} catch (Exception e) {
 			e.printStackTrace();
