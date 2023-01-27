@@ -3,13 +3,10 @@ package com.common.util;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
-import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
@@ -66,14 +63,7 @@ public class AutoGeneratorUtil {
 		help.append("请输入" + tip + "：");
 		System.out.println(help.toString());
 
-		if (scanner.hasNext()) {
-			String ipt = scanner.next();
-			if (StringUtils.isNotBlank(tip)) {
-				return ipt;
-			}
-		}
-
-		throw new MybatisPlusException("请输入正确的" + tip + "！");
+		return scanner.nextLine();
 	}
 
 	/**
@@ -81,26 +71,31 @@ public class AutoGeneratorUtil {
 	 */
 	public static void main(String[] args) {
 		init();
-		// genCode("test", "test", "dept_log");
+		// init("test");
+		// genCode("test", "", "test", "test");
 	}
 
 	public static void init() {
-		String scannerModule = scanner("模块名");
 		String scannerDatabase = scanner("数据库名");
-		String scannerTable = scanner("表名 (多个表名使用逗号分隔，*为所有表)");
 
-		genCode(scannerDatabase, scannerModule, scannerTable);
+		init(scannerDatabase);
 	}
 
 	public static void init(String database) {
-		String scannerModule = scanner("模块名");
 		String scannerTable = scanner("表名 (多个表名使用逗号分隔)");
+		String scannerModule = scanner("模块名");
+		String scannerPackage = scanner(String.format("包名（%s）", scannerModule));
 
-		genCode(database, scannerModule, scannerTable);
+		if (scannerPackage.isEmpty()) {
+			scannerPackage = scannerModule;
+		}
+
+		genCode(database, scannerTable, scannerModule, scannerPackage);
 	}
 
-	public static void genCode(String scannerDatabase, String scannerModule, String scannerTable) {
-		boolean isRootModule = Objects.equals("/", scannerModule);
+	public static void genCode(String scannerDatabase, String scannerTable, String scannerModule,
+			String scannerPackage) {
+		boolean isRootModule = scannerModule.isEmpty();
 		String modulePath = isRootModule ? "" : "/" + scannerModule;
 
 		// 代码生成器
@@ -117,7 +112,7 @@ public class AutoGeneratorUtil {
 
 		// 数据源配置
 		DataSourceConfig dsc = new DataSourceConfig();
-		boolean isRootDataBase = Objects.equals("/", scannerDatabase);
+		boolean isRootDataBase = scannerDatabase.isEmpty();
 		String url = String.format(
 				"jdbc:mysql://127.0.0.1:3306%s?useUnicode=true&useSSL=false&characterEncoding=utf8",
 				isRootDataBase ? "" : "/" + scannerDatabase);
@@ -130,7 +125,7 @@ public class AutoGeneratorUtil {
 
 		// 包配置
 		PackageConfig pc = new PackageConfig();
-		pc.setModuleName(isRootModule ? null : scannerModule);
+		pc.setModuleName(isRootModule ? null : scannerPackage);
 		pc.setParent("com");
 		mpg.setPackageInfo(pc);
 
@@ -142,7 +137,7 @@ public class AutoGeneratorUtil {
 			}
 		};
 		List<FileOutConfig> focList = new ArrayList<>();
-		String[] tableNames = getTableName(isRootDataBase ? null : scannerDatabase, scannerTable, dsc);
+		String[] tableNames = getTableName(scannerDatabase, scannerTable, dsc);
 
 		Stream.of(tableNames).forEach(
 				(o) -> focList.add(new FileOutConfigExtension("/templates/mapper.xml.ftl", projectPath, modulePath)));
@@ -165,20 +160,23 @@ public class AutoGeneratorUtil {
 		mpg.setStrategy(strategy);
 		// 选择 freemarker 引擎需要指定如下加，注意 pom 依赖必须有！
 		mpg.setTemplateEngine(new FreemarkerTemplateEngine());
+
+		long start = System.currentTimeMillis();
 		log.debug("[START] 准备生成文件...");
 		mpg.execute();
-		log.debug("[END] 文件生成完成!!!");
+		log.debug(String.format("[END] 文件生成完成, 共耗时[%s]ms !", System.currentTimeMillis() - start));
 	}
 
 	private static String[] getTableName(String scannerDatabase, String scannerTable, DataSourceConfig dsc) {
-		if (!Objects.equals("*", scannerTable)) {
-			return scannerTable.split(", |,");
+		if (!scannerTable.isEmpty()) {
+			return scannerTable.split(",");
 		}
 
 		ArrayList<String> list = new ArrayList<>();
+		boolean empty = scannerDatabase.isEmpty();
 
 		try {
-			ResultSet catalogs = dsc.getConn().getMetaData().getTables(scannerDatabase, null, null,
+			ResultSet catalogs = dsc.getConn().getMetaData().getTables(empty ? null : scannerDatabase, null, null,
 					new String[] { "TABLE" });
 
 			while (catalogs.next()) {
@@ -186,7 +184,7 @@ public class AutoGeneratorUtil {
 				list.add(name);
 			}
 
-			log.debug("扫描[{}]数据库下共有[{}]张表: {}", Objects.isNull(scannerDatabase) ? "/" : scannerDatabase, list.size(),
+			log.debug("扫描[{}]数据库下共有[{}]张表: {}", empty ? "" : scannerDatabase, list.size(),
 					list);
 		} catch (Exception e) {
 			e.printStackTrace();
