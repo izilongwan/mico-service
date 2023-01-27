@@ -3,7 +3,6 @@ package com.common.config;
 import javax.annotation.Resource;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -24,7 +23,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 @EnableKnife4j
 @EnableSwagger2WebMvc
 @EnableSwagger2WebFlux
-@ComponentScan(basePackages = "com.common.entity")
 public class WebMvcSwaggerConfig extends WebMvcConfigurationSupport {
         @Resource
         AppInfo appInfo;
