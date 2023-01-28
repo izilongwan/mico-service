@@ -20,6 +20,7 @@ import com.common.util.AopCheckUtil;
 
 @Configuration
 @Aspect
+@SuppressWarnings("unchecked")
 public class ValidatorAop {
     @Pointcut("execution(public * com..controller.*Controller.*(..))")
     private void range() {
@@ -103,19 +104,19 @@ public class ValidatorAop {
             return Objects.isNull(checkPropAnno) ? null : checkPropAnno;
         }
 
-        String pattern = validatorAnno.value();
+        String regexp = validatorAnno.value();
 
-        if (pattern.isEmpty()) {
-            pattern = validatorAnno.pattern();
+        if (regexp.isEmpty()) {
+            regexp = validatorAnno.regexp();
         }
 
-        if (pattern.isEmpty()) {
+        if (regexp.isEmpty()) {
             return null;
         }
 
         String value = String.valueOf(val);
 
-        if (!value.matches(pattern)) {
+        if (!value.matches(regexp)) {
             String message = validatorAnno.message();
             String simpleName = "";
 

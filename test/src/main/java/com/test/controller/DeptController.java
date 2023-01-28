@@ -68,7 +68,7 @@ public class DeptController {
     @ApiOperation(value = "", notes = "获取分页dept")
     public R<Page<Dept>> getDeptListPage(
             @ApiParam(value = "当前分页", required = true) @ValidatorAnno(value = "[1-9]\\d?") @PathVariable Integer current,
-            @ApiParam(value = "分页数量", required = true) @ValidatorAnno(pattern = "[1-9]\\d?") @PathVariable Integer pageSize) {
+            @ApiParam(value = "分页数量", required = true) @ValidatorAnno(regexp = "[1-9]\\d?") @PathVariable Integer pageSize) {
         Page<Dept> page = new Page<>(current, pageSize);
 
         return R.SUCCESS(deptMapper.selectPage(page, null));

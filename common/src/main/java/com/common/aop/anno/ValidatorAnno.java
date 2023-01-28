@@ -12,11 +12,11 @@ import org.springframework.core.annotation.AliasFor;
 @Target({ ElementType.PARAMETER, ElementType.FIELD, ElementType.METHOD, ElementType.LOCAL_VARIABLE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidatorAnno {
-    @AliasFor("pattern")
+    @AliasFor("regexp")
     String value() default "";
 
     @AliasFor("value")
-    String pattern() default "";
+    String regexp() default "";
 
     String message() default "";
 
