@@ -79,7 +79,17 @@ public class AutoGeneratorUtil {
 	}
 
 	public static void init() {
+		AutoGeneratorEntity autoGeneratorEntity = new AutoGeneratorEntity();
+
 		String url = scanner("[1] 请输入数据库地址 (127.0.0.1:3306)");
+
+		if (!url.isEmpty()) {
+			String driverName = scanner("[-] 请输入数据库驱动 (com.mysql.cj.jdbc.Driver)");
+			if (!driverName.isEmpty()) {
+				autoGeneratorEntity.setDriverName(driverName);
+			}
+		}
+
 		String username = scanner("[2] 请输入数据库用户名");
 		String password = scanner("[3] 请输入数据库地址");
 		String database = scanner("[4] 请输入数据库名 (必须有)");
@@ -88,8 +98,6 @@ public class AutoGeneratorUtil {
 		String packageName = scanner(
 				String.format("[7] 请输入包名%s", moduleName.isEmpty() ? "" : String.format(" (%s)", moduleName)));
 		String author = scanner(String.format("[8] 请输入作者 (izilong)"));
-
-		AutoGeneratorEntity autoGeneratorEntity = new AutoGeneratorEntity();
 
 		if (packageName.isEmpty()) {
 			packageName = moduleName;
