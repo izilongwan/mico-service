@@ -1,5 +1,8 @@
 package com.common.aop;
 
+import java.lang.reflect.Field;
+import java.util.Objects;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -9,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import com.common.aop.anno.NotNullAnno;
 import com.common.entity.R;
 import com.common.util.AopCheckUtil;
-import com.google.common.base.Objects;
 
 @Aspect
 @Configuration
@@ -30,10 +32,17 @@ public class NotNullAnnoAop {
             AopCheckUtil.checkField(
                     proceedingJoinPoint,
                     paramBo -> {
-                        if (paramBo.getAnnotation() instanceof NotNullAnno &&
-                                Objects.equal(paramBo.getValue(), null)) {
-                            String checkValid = String.format("属性[%s]的值为空", paramBo.getName());
-                            AopCheckUtil.throwException(checkValid);
+                        Field field = paramBo.getField();
+
+                        if (Objects.isNull(field)) {
+                            return null;
+                        }
+
+                        if (field.isAnnotationPresent(NotNullAnno.class)) {
+                            if (Objects.isNull(paramBo.getValue())) {
+                                String checkValid = String.format("属性[%s]的值为空", paramBo.getName());
+                                AopCheckUtil.throwException(checkValid);
+                            }
                         }
 
                         return null;

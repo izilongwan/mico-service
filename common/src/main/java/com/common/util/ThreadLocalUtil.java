@@ -3,6 +3,7 @@ package com.common.util;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unchecked")
 public class ThreadLocalUtil {
     public static ThreadLocal<Map<String, Object>> pool = ThreadLocal.withInitial(HashMap::new);
 

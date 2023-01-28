@@ -1,8 +1,8 @@
 package com.common.aop;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -33,13 +33,15 @@ public class ValidatorAop {
             AopCheckUtil.checkMethodParam(
                     proceedingJoinPoint,
                     paramBo -> {
-                        Annotation annotation = paramBo.getAnnotation();
-                        boolean annotationPresent = annotation instanceof ValidatorAnno;
+                        Parameter parameter = paramBo.getParameter();
 
-                        if (annotationPresent) {
-                            ValidatorAnno validatorAnno = ((ValidatorAnno) annotation);
+                        if (Objects.isNull(parameter)) {
+                            return null;
+                        }
 
-                            String checkValid = checkValid(validatorAnno, paramBo);
+                        if (parameter.isAnnotationPresent(ValidatorAnno.class)) {
+                            ValidatorAnno annotation = parameter.getAnnotation(ValidatorAnno.class);
+                            String checkValid = checkValid(annotation, paramBo);
                             AopCheckUtil.throwException(checkValid);
                         }
 
@@ -63,8 +65,14 @@ public class ValidatorAop {
             AopCheckUtil.checkField(
                     proceedingJoinPoint,
                     paramBo -> {
-                        Annotation annotation = paramBo.getAnnotation();
-                        if (annotation instanceof ValidatorAnno) {
+                        Field field = paramBo.getField();
+
+                        if (Objects.isNull(field)) {
+                            return null;
+                        }
+
+                        if (field.isAnnotationPresent(ValidatorAnno.class)) {
+                            ValidatorAnno annotation = field.getAnnotation(ValidatorAnno.class);
                             String checkValid = checkValid((ValidatorAnno) annotation, paramBo);
                             AopCheckUtil.throwException(checkValid);
                         }

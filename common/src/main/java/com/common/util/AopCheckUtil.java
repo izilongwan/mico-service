@@ -1,6 +1,5 @@
 package com.common.util;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -12,6 +11,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 
 import com.common.bo.ParamBo;
 
+@SuppressWarnings("unchecked")
 public class AopCheckUtil {
     // 获取方法参数注解
     public static <T> Object checkMethodParam(
@@ -20,27 +20,20 @@ public class AopCheckUtil {
         MethodSignature methodSignature = ((MethodSignature) proceedingJoinPoint.getSignature());
         // 获取方法
         Method method = methodSignature.getMethod();
-        // 获取方法参数注解
-        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-        // 获取方法参数名称
-        String[] parameterNames = methodSignature.getParameterNames();
+        // 方法参数集合
+        Parameter[] parameters = method.getParameters();
         // 获取方法参数值
         Object[] args = proceedingJoinPoint.getArgs();
-
         int i = 0;
-        int length = parameterAnnotations.length;
-        for (Annotation[] parameterAnnotation : parameterAnnotations) {
-            // 获取方法参数名
-            String paramName = parameterNames[i];
+
+        for (Parameter parameter : parameters) {
+            // 获取方法参数名称
+            String name = parameter.getName();
             // 获取方法参数值
-            T paramValue = (T) args[i];
+            T value = (T) args[i];
 
-            for (Annotation parameterAnno : parameterAnnotation) {
-                ParamBo<T> methodParamBo = new ParamBo<>(paramName, paramValue, parameterAnno);
-                methodParamBo.setIndex(i).setLastIndex(i == length - 1);
-                cb.apply(methodParamBo);
-            }
-
+            ParamBo<T> methodParamBo = new ParamBo<>(name, value, parameter);
+            cb.apply(methodParamBo);
             i++;
         }
 
@@ -65,24 +58,18 @@ public class AopCheckUtil {
                     .filter(ar -> clazz.isAssignableFrom(ar.getClass()))
                     .findFirst()
                     .get();
-            int i = 0;
-            int length = declaredFields.length;
 
             for (Field field : declaredFields) {
+                // 强制获取成员信息
                 field.setAccessible(true);
-                // boolean annotationPresent = field.isAnnotationPresent(ValidatorAnno.class);
-                Annotation[] annos = field.getAnnotations();
+                // 获取成员参数名称
                 String name = field.getName();
+                // 获取成员参数值
                 T value = (T) field.get(arg);
 
-                for (Annotation anno : annos) {
-                    ParamBo<T> paramBo = new ParamBo<>(name, value, anno, field);
-                    paramBo.setIndex(i).setLastIndex(i == length - 1);
-                    cb.apply(paramBo);
-                }
-
+                ParamBo<T> paramBo = new ParamBo<>(name, value, parameter, field);
+                cb.apply(paramBo);
             }
-
         }
 
         return null;
@@ -90,7 +77,7 @@ public class AopCheckUtil {
 
     public static void throwException(Object message) {
         if (message instanceof String) {
-            throw new RuntimeException(((String) message), new Throwable("AOP"));
+            throw new RuntimeException(((String) message));
         }
     }
 

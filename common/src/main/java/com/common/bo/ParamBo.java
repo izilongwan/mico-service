@@ -1,7 +1,7 @@
 package com.common.bo;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Parameter;
 
 import lombok.Data;
 import lombok.ToString;
@@ -13,19 +13,17 @@ import lombok.experimental.Accessors;
 public class ParamBo<T extends Object> {
     String name;
     T value;
-    Annotation annotation;
+    Parameter parameter;
     Field field;
-    int index;
-    boolean isLastIndex;
 
-    public ParamBo(String name, T value, Annotation annotation, Field field) {
+    public ParamBo(String name, T value, Parameter parameter, Field field) {
         this.name = name;
         this.value = value;
-        this.annotation = annotation;
+        this.parameter = parameter;
         this.field = field;
     }
 
-    public ParamBo(String name, T value, Annotation annotation) {
-        this(name, value, annotation, null);
+    public ParamBo(String name, T value, Parameter parameter) {
+        this(name, value, parameter, null);
     }
 }
