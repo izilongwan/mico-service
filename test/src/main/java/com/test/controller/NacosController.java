@@ -2,6 +2,7 @@ package com.test.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -24,9 +25,12 @@ public class NacosController {
     @Value("${info.age:}")
     String age;
 
+    @Value("${info.gf:}")
+    Object[] gf;
+
     @GetMapping("info")
     public R<String> info() {
-        String baseInfo = String.format("name: %s, age: %s", name, age);
+        String baseInfo = String.format("name: %s, age: %s, gf: %s", name, age, Arrays.toString(gf));
         return R.SUCCESS(baseInfo);
     }
 
