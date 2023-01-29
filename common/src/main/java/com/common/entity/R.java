@@ -3,6 +3,8 @@ package com.common.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -69,6 +71,8 @@ public class R<T> implements Serializable {
 
     String path = null;
 
+    String query = null;
+
     long timecost = 0;
 
     long timestamp = System.currentTimeMillis();
@@ -110,8 +114,9 @@ public class R<T> implements Serializable {
             return;
         }
 
-        String path = reqAttrs.getRequest().getRequestURI();
+        HttpServletRequest request = reqAttrs.getRequest();
 
-        this.path = path;
+        this.path = request.getRequestURI();
+        this.query = request.getQueryString();
     }
 }
