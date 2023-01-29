@@ -10,7 +10,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.context.annotation.Configuration;
 
 import com.common.aop.anno.NotNullAnno;
-import com.common.entity.R;
 import com.common.util.AopCheckUtil;
 
 @Aspect
