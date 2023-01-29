@@ -34,7 +34,7 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-generator</artifactId>
-          </dependency>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
