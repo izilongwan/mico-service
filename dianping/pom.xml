@@ -18,7 +18,7 @@
         <dependency>
             <groupId>com.feignapi</groupId>
             <artifactId>feignapi</artifactId>
-            <version>${project.version}</version>
+            <version>${feignapi.version}</version>
         </dependency>
 
         <dependency>
