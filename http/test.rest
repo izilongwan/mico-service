@@ -1,0 +1,101 @@
+@PROTOCOL = http://
+@HOST = {{PROTOCOL}}localhost
+@REMOTE_HOST = {{PROTOCOL}}47.107.72.91
+@PORT = 9006
+@VERSION = HTTP/1.1
+@CONTENT_TYPE = Content-Type: application/json
+
+###
+GET {{HOST}}:{{PORT}}/doc.html {{VERSION}}
+
+###
+GET {{HOST}}:{{PORT}}/appliction.yml {{VERSION}}
+
+###
+POST {{HOST}}:{{PORT}}/test/dept/demo {{VERSION}}
+{{CONTENT_TYPE}}
+
+{
+
+}
+
+###
+POST {{HOST}}:{{PORT}}/test/dept {{VERSION}}
+{{CONTENT_TYPE}}
+
+{
+  "id": 1,
+  "name": "w9"
+}
+
+###
+GET {{HOST}}:{{PORT}}/test/dept {{VERSION}}
+
+###
+GET {{HOST}}:{{PORT}}/test/dept/list {{VERSION}}
+
+###
+GET {{HOST}}:{{PORT}}/test/dept/list/2/2 {{VERSION}}
+
+###
+GET {{HOST}}:{{PORT}}/test/dept/10 {{VERSION}}
+
+###
+GET {{HOST}}:{{PORT}}/test/poi/download {{VERSION}}
+
+###
+# @name tomcat
+GET {{REMOTE_HOST}}:5007/demo {{VERSION}}
+
+@res = {{tomcat.request.body}}
+
+###
+GET {{REMOTE_HOST}}?{{res}} {{VERSION}}
+
+###
+GET {{REMOTE_HOST}}:5005/common/test/dept/list {{VERSION}}
+
+###
+GET {{REMOTE_HOST}}:5005/common/test/dept/list/9 {{VERSION}}
+
+###
+GET {{REMOTE_HOST}}:5008 {{VERSION}}
+
+###
+GET {{HOST}}:9000/common/test/dept/12 {{VERSION}}
+
+###
+GET {{HOST}}:9002/m2/333 {{VERSION}}
+Accept-Language: en-GB,en-US;q=0.8,en;q=0.6,zh-CN;q=0.4
+Cookie: name=1
+
+###
+GET {{HOST}}:9003/m3/0 {{VERSION}}
+Accept-Language: en-GB,en-US;q=0.8,en;q=0.6,zh-CN;q=0.4
+Cookie: name=1
+
+###
+GET {{HOST}}:9007/dianping/user/cookie/set {{VERSION}}
+
+###
+GET {{HOST}}:9007/dianping/user/cookie/rm {{VERSION}}
+Cookie: username=1673683100379; Max-Age=86400; Expires=Sun, 15-Jan-2023 07:58:20 GMT; Domain=localhost; Path=/; HttpOnly
+
+###
+GET {{HOST}}:9007/dianping/user {{VERSION}}
+
+###
+GET {{HOST}}:9007/dianping/user/res {{VERSION}}
+Cookie: username=1673682851803; Max-Age=86400; Expires=Sun, 15-Jan-2023 07:54:11 GMT; Domain=localhost; Path=/; HttpOnly
+
+###
+GET https://api.isoyu.com/bing_images.php {{VERSION}}
+
+###
+GET https://api.ixiaowai.cn/gqapi/gqapi.php {{VERSION}}
+
+###
+GET {{PROTOCOL}}iyou.ltd {{VERSION}}
+
+###
+GET {{HOST}} {{VERSION}}

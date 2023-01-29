@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.dianping</groupId>
     <artifactId>dianping</artifactId>
-    <version>${dianping.version}</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>com</groupId>
         <artifactId>mico-service</artifactId>
-        <version>${mico-service.version}</version>
+        <version>1.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -18,7 +18,7 @@
         <dependency>
             <groupId>com.feignapi</groupId>
             <artifactId>feignapi</artifactId>
-            <version>${feignapi.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
