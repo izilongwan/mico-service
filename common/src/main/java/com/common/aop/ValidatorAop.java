@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
 import com.common.aop.anno.ValidatorAnno;
 import com.common.aop.anno.ValidatorPropAnno;
 import com.common.bo.ParamBo;
-import com.common.entity.R;
 import com.common.util.AopCheckUtil;
 
 @Configuration
@@ -30,27 +29,23 @@ public class ValidatorAop {
     @Around("range() || anno()")
     private Object aroundCheckMethodParam(ProceedingJoinPoint proceedingJoinPoint)
             throws Throwable {
-        try {
-            AopCheckUtil.checkMethodParam(
-                    proceedingJoinPoint,
-                    paramBo -> {
-                        Parameter parameter = paramBo.getParameter();
+        AopCheckUtil.checkMethodParam(
+                proceedingJoinPoint,
+                paramBo -> {
+                    Parameter parameter = paramBo.getParameter();
 
-                        if (Objects.isNull(parameter)) {
-                            return null;
-                        }
-
-                        if (parameter.isAnnotationPresent(ValidatorAnno.class)) {
-                            ValidatorAnno annotation = parameter.getAnnotation(ValidatorAnno.class);
-                            String checkValid = checkValid(annotation, paramBo);
-                            AopCheckUtil.throwException(checkValid);
-                        }
-
+                    if (Objects.isNull(parameter)) {
                         return null;
-                    });
-        } catch (Exception e) {
-            return R.ERROR(e.getMessage());
-        }
+                    }
+
+                    if (parameter.isAnnotationPresent(ValidatorAnno.class)) {
+                        ValidatorAnno annotation = parameter.getAnnotation(ValidatorAnno.class);
+                        String checkValid = checkValid(annotation, paramBo);
+                        AopCheckUtil.runtimeException(checkValid);
+                    }
+
+                    return null;
+                });
 
         return proceedingJoinPoint.proceed();
     }
@@ -75,7 +70,7 @@ public class ValidatorAop {
                         if (field.isAnnotationPresent(ValidatorAnno.class)) {
                             ValidatorAnno annotation = field.getAnnotation(ValidatorAnno.class);
                             String checkValid = checkValid((ValidatorAnno) annotation, paramBo);
-                            AopCheckUtil.throwException(checkValid);
+                            AopCheckUtil.runtimeException(checkValid);
                         }
 
                         return null;
@@ -83,9 +78,8 @@ public class ValidatorAop {
             return proceedingJoinPoint.proceed();
 
         } catch (Throwable e) {
-            return R.ERROR(e.getMessage());
+            return AopCheckUtil.error((Exception) e);
         }
-
     }
 
     private <T> String checkValid(ValidatorAnno validatorAnno, ParamBo<T> paramBo) {

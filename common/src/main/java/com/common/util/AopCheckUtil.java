@@ -9,7 +9,9 @@ import java.util.function.Function;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 
+import com.common.advice.ExceptionHandlerAdvice;
 import com.common.bo.ParamBo;
+import com.common.entity.R;
 
 @SuppressWarnings("unchecked")
 public class AopCheckUtil {
@@ -40,7 +42,7 @@ public class AopCheckUtil {
         return null;
     }
 
-    // 获取类属性注解, 需使用try catch返回R.Error()
+    // 获取类属性注解, 需使用try catch返回捕获异常
     public static <T> Object checkField(
             ProceedingJoinPoint proceedingJoinPoint,
             Function<ParamBo<T>, Object> cb) throws Exception {
@@ -75,10 +77,14 @@ public class AopCheckUtil {
         return null;
     }
 
-    public static void throwException(Object message) {
+    public static void runtimeException(Object message) {
         if (message instanceof String) {
             throw new RuntimeException(((String) message));
         }
+    }
+
+    public static R<Exception> error(Exception e) {
+        return ExceptionHandlerAdvice.error(e, false);
     }
 
 }
