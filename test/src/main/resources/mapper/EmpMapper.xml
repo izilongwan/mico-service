@@ -7,7 +7,7 @@
 
     <!-- delete -->
     <delete id="delete">
-        DELETE FROM emp WHERE id = ${id};
+        DELETE FROM emp WHERE id = #{id};
     </delete>
 
     <!-- update -->
