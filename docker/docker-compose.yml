@@ -11,7 +11,8 @@ services:
       - 8848:8848
 
   c_mysql:
-    depends_on: nacos
+    depends_on:
+      - nacos
     restart: always
     image: mysql:8.0
     environment:
@@ -24,7 +25,8 @@ services:
     ports:
       - 5006:3306
   c_redis:
-    depends_on: nacos
+    depends_on:
+      - nacos
     restart: always
     image: redis
     ports:
@@ -40,7 +42,10 @@ services:
     ports:
       - 5008:80
   c_app:
-    depends_on: nacos,c_mysql,c_redis
+    depends_on:
+      - nacos,
+      - c_mysql
+      - c_redis
     restart: always
     image: app:2.0
     ports:
