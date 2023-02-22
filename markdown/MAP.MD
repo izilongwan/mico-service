@@ -1,0 +1,7 @@
+- **Map** 键值对集合
+  - **HashMap** 无序，不重复，无索引
+    - **LinkedHashMap** （哈希表结构） 有序，不重复，无索引
+  - **HashTable**
+    - **Properties**
+  - xxx
+    - **TreeMap**  只可对键名排序，不重复，无索引
