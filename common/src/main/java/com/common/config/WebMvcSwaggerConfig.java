@@ -4,9 +4,6 @@ import javax.annotation.Resource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-
 import com.common.entity.AppInfo;
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 
@@ -23,20 +20,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 @EnableKnife4j
 @EnableSwagger2WebMvc
 @EnableSwagger2WebFlux
-public class WebMvcSwaggerConfig extends WebMvcConfigurationSupport {
+public class WebMvcSwaggerConfig {
         @Resource
         AppInfo appInfo;
-
-        // 静态资源访问
-        @Override
-        protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-                registry.addResourceHandler("/doc.html")
-                                .addResourceLocations("classpath:/META-INF/resources/");
-                registry.addResourceHandler("/webjars/**")
-                                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-                registry.addResourceHandler("/pages/**")
-                                .addResourceLocations("classpath:/pages/");
-        }
 
         @Bean
         public Docket docket() {
