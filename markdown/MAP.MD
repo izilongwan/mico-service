@@ -4,4 +4,4 @@
   - **HashTable**
     - **Properties**
   - xxx
-    - **TreeMap**  只可对键名排序，不重复，无索引
+    - **TreeMap**  只可对键名排序，不重复，无索引![MapStructure](https://weiyong.org/languages/java/basic/images/map_structure.png)

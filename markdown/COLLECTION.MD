@@ -9,4 +9,5 @@
     - **HashSet** 无序，不重复，无索引
 
       - **LinkedHashSet** 有序，不重复，无索引
-    - **TreeSet** **默认按大小升序**，不重复，无索引
+    - **TreeSet** **默认按大小升**
+    - **序**，不重复，无索引![CollectionFamily](https://weiyong.org/languages/java/basic/images/collection_family.png)
