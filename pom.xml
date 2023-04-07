@@ -63,6 +63,7 @@
         <hutool-all.version>5.8.5</hutool-all.version>
         <spring-cloud.version>2020.0.1</spring-cloud.version>
         <spring-cloud-alibaba-dependencies.version>2.2.5.RELEASE</spring-cloud-alibaba-dependencies.version>
+        <netflix-hystrix.version>2.2.9.RELEASE</netflix-hystrix.version>
         <maven.test.skip>true</maven.test.skip>
     </properties>
 

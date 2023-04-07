@@ -11,3 +11,5 @@ feign:
     enabled: true
     max-connections: 200
     max-connections-per-route: 50
+  circuitbreaker:
+    enabled: true
